@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Test;
 
 class DeliveryControllerTest {
     @Test
-    void testRegisterCreatesDeliverys() {
+    void testRegisterCreatesDeliveries() {
         DeliveryController deliveryController =
                 new DeliveryController(new InMemoryRepository<Delivery>());
-        assertThat(deliveryController.getDeliverys()).isNotEmpty();
+        assertThat(deliveryController.getDeliveries()).isNotEmpty();
     }
 
     @Test
-    void testRegisterCreatesValidDeliverys() {
+    void testRegisterCreatesValidDeliveries() {
         DeliveryController deliveryController =
                 new DeliveryController(new InMemoryRepository<Delivery>());
 
-        for (Delivery delivery : deliveryController.getDeliverys()) {
+        for (Delivery delivery : deliveryController.getDeliveries()) {
             assertWithMessage(delivery.getTitle()).that(delivery.isValid()).isTrue();
         }
     }

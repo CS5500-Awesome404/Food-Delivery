@@ -13,19 +13,19 @@ import org.bson.types.ObjectId;
 @Singleton
 @Slf4j
 public class DeliveryController {
-    private final GenericRepository<Delivery> deliverys;
+    private final GenericRepository<Delivery> deliveries;
 
     @Inject
     DeliveryController(GenericRepository<Delivery> deliveryRepository) {
-        deliverys = deliveryRepository;
+        deliveries = deliveryRepository;
 
         log.info("DeliveryController > construct");
 
-        if (deliverys.count() > 0) {
+        if (deliveries.count() > 0) {
             return;
         }
 
-        log.info("DeliveryController > construct > adding default deliverys");
+        log.info("DeliveryController > construct > adding default deliveries");
 
         final Delivery defaultDelivery1 = new Delivery();
         defaultDelivery1.setTitle("Hot dog");
@@ -38,7 +38,7 @@ public class DeliveryController {
             addDelivery(defaultDelivery1);
             addDelivery(defaultDelivery2);
         } catch (Exception e) {
-            log.error("DeliveryController > construct > adding default deliverys > failure?");
+            log.error("DeliveryController > construct > adding default deliveries > failure?");
             e.printStackTrace();
         }
     }
@@ -46,13 +46,13 @@ public class DeliveryController {
     @Nullable
     public Delivery getDelivery(@Nonnull ObjectId uuid) {
         log.debug("DeliveryController > getDelivery({})", uuid);
-        return deliverys.get(uuid);
+        return deliveries.get(uuid);
     }
 
     @Nonnull
-    public Collection<Delivery> getDeliverys() {
-        log.debug("DeliveryController > getDeliverys()");
-        return deliverys.getAll();
+    public Collection<Delivery> getDeliveries() {
+        log.debug("DeliveryController > getDeliveries()");
+        return deliveries.getAll();
     }
 
     @Nonnull
@@ -66,21 +66,21 @@ public class DeliveryController {
 
         ObjectId id = delivery.getId();
 
-        if (id != null && deliverys.get(id) != null) {
+        if (id != null && deliveries.get(id) != null) {
             // TODO: replace with a real duplicate key exception
             throw new Exception("DuplicateKeyException");
         }
 
-        return deliverys.add(delivery);
+        return deliveries.add(delivery);
     }
 
     public void updateDelivery(@Nonnull Delivery delivery) throws Exception {
         log.debug("DeliveryController > updateDelivery(...)");
-        deliverys.update(delivery);
+        deliveries.update(delivery);
     }
 
     public void deleteDelivery(@Nonnull ObjectId id) throws Exception {
         log.debug("DeliveryController > deleteDelivery(...)");
-        deliverys.delete(id);
+        deliveries.delete(id);
     }
 }
