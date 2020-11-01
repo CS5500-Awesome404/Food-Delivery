@@ -35,7 +35,7 @@ public class DeliveryView implements View {
                 (request, response) -> {
                     log.debug("/delivery");
                     response.type("application/json");
-                    return deliveryController.getDeliverys();
+                    return deliveryController.getDeliveries();
                 },
                 jsonTransformer);
 

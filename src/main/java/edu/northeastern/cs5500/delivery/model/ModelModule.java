@@ -9,4 +9,24 @@ public class ModelModule {
     public Class<Delivery> provideDeliveryClass() {
         return Delivery.class;
     }
+
+    @Provides
+    public Class<User> provideMenuClass() {
+        return User.class;
+    }
+
+    @Provides
+    public Class<Meal> provideMealClass() {
+        return Meal.class;
+    }
+
+    @Provides
+    public Class<Order> provideOrderClass() {
+        return Order.class;
+    }
+
+    @Provides
+    public Class<Restaurant> provideRestaurantClass() {
+        return Restaurant.class;
+    }
 }
