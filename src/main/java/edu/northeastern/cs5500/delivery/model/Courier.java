@@ -5,7 +5,7 @@ import lombok.Data;
 import org.bson.types.ObjectId;
 
 @Data
-public class Courier implements Model{
+public class Courier implements Model {
     private ObjectId id;
 
     private String courierName;

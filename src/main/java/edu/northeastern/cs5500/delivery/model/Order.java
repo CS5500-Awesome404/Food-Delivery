@@ -1,10 +1,9 @@
 package edu.northeastern.cs5500.delivery.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
 import lombok.Data;
 import org.bson.types.ObjectId;
-
-import java.util.List;
 
 @Data
 public class Order implements Model {

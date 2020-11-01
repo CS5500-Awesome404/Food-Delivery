@@ -2,17 +2,14 @@ package edu.northeastern.cs5500.delivery.controller;
 
 import edu.northeastern.cs5500.delivery.exception.AlreadyExistsException;
 import edu.northeastern.cs5500.delivery.model.Meal;
-import edu.northeastern.cs5500.delivery.model.Restaurant;
 import edu.northeastern.cs5500.delivery.repository.GenericRepository;
-
+import java.util.Collection;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
-
-import java.util.Collection;
 
 @Singleton
 @Slf4j
@@ -21,7 +18,9 @@ public class MealController {
     private final Provider<RestaurantController> restaurantControllerProvider;
 
     @Inject
-    MealController(GenericRepository<Meal> mealRepository, Provider<RestaurantController> restaurantControllerProvider) {
+    MealController(
+            GenericRepository<Meal> mealRepository,
+            Provider<RestaurantController> restaurantControllerProvider) {
         meals = mealRepository;
         this.restaurantControllerProvider = restaurantControllerProvider;
 
@@ -38,25 +37,24 @@ public class MealController {
     }
 
     @Nonnull
-    public Meal getMeal(@Nonnull ObjectId uuid){
+    public Meal getMeal(@Nonnull ObjectId uuid) {
         log.debug("MealController > getMeal({}", uuid);
         return meals.get(uuid);
     }
 
     @Nonnull
-    public Collection<Meal> getMeals(){
+    public Collection<Meal> getMeals() {
         log.debug("MealController > getMeals({}");
         return meals.getAll();
     }
 
-    public void deleteMeal(@Nonnull ObjectId mealId) throws AlreadyExistsException{
+    public void deleteMeal(@Nonnull ObjectId mealId) throws AlreadyExistsException {
         log.debug("MealController > deleteMeal(...)");
 
         // 1. update restaurant
         ObjectId restaurantId = getMeal(mealId).getRestaurantId();
         RestaurantController restaurantController = restaurantControllerProvider.get();
         restaurantController.updateRestaurantRemoveMeal(restaurantId, mealId);
-
 
         // 2. delete meal by mealId
         meals.delete(mealId);
@@ -69,7 +67,7 @@ public class MealController {
         // 1. update restaurant
         ObjectId restaurantId = meal.getRestaurantId();
         ObjectId mealId = meal.getId();
-        if (mealId != null && meals.get(mealId) != null){
+        if (mealId != null && meals.get(mealId) != null) {
             throw new AlreadyExistsException();
         }
         RestaurantController restaurantController = restaurantControllerProvider.get();

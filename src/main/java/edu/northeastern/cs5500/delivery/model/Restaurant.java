@@ -1,8 +1,7 @@
 package edu.northeastern.cs5500.delivery.model;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
 import lombok.Data;
 import org.bson.types.ObjectId;
 

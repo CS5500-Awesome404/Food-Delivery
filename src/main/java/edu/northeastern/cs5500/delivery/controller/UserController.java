@@ -4,20 +4,17 @@ import edu.northeastern.cs5500.delivery.exception.AlreadyExistsException;
 import edu.northeastern.cs5500.delivery.exception.BadRequestException;
 import edu.northeastern.cs5500.delivery.model.Order;
 import edu.northeastern.cs5500.delivery.model.User;
-
+import edu.northeastern.cs5500.delivery.repository.GenericRepository;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
-
-import edu.northeastern.cs5500.delivery.repository.GenericRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @Singleton
 @Slf4j
@@ -27,7 +24,9 @@ public class UserController {
     private final Provider<OrderController> orderControllerProvider;
 
     @Inject
-    public UserController(GenericRepository<User> userRepository, Provider<OrderController> orderControllerProvider) {
+    public UserController(
+            GenericRepository<User> userRepository,
+            Provider<OrderController> orderControllerProvider) {
         users = userRepository;
         this.orderControllerProvider = orderControllerProvider;
         log.info("UserController > construct");
@@ -37,14 +36,13 @@ public class UserController {
         user1.setEmail("abcxyz@xyz.com");
         user1.setAddress("Seattle, WA");
         user1.setPassword("abc@@@");
-        try{
+        try {
             addNewUser(user1);
-        } catch (AlreadyExistsException e){
+        } catch (AlreadyExistsException e) {
             e.printStackTrace();
-        } catch (BadRequestException e){
+        } catch (BadRequestException e) {
             e.printStackTrace();
         }
-
     }
 
     // create new order
@@ -66,7 +64,6 @@ public class UserController {
         return orderController.addNewOrder(newOrder);
     }
 
-
     // Reminder: revise the quantity of same meals in UI
     public User addNewMealToCart(ObjectId userId, ObjectId mealId) {
         // 1. get the user and its cart
@@ -83,7 +80,8 @@ public class UserController {
     }
 
     @Nonnull
-    public User removeMealFromCart(@Nonnull  ObjectId userId, @Nonnull ObjectId mealId) throws Exception{
+    public User removeMealFromCart(@Nonnull ObjectId userId, @Nonnull ObjectId mealId)
+            throws Exception {
         // 1. get the user and its cart
         User user = users.get(userId);
         List<ObjectId> userCart = user.getMealCart();
@@ -97,7 +95,7 @@ public class UserController {
 
     public User addNewUser(User user) throws BadRequestException, AlreadyExistsException {
         log.debug("UserController > createNewUser");
-        if (!user.isValid()){
+        if (!user.isValid()) {
             throw new BadRequestException();
         }
         ObjectId id = user.getId();
@@ -112,19 +110,19 @@ public class UserController {
         users.update(user);
     }
 
-    public void deleteUser(@Nonnull ObjectId userId) throws BadRequestException{
+    public void deleteUser(@Nonnull ObjectId userId) throws BadRequestException {
         log.debug("UserController > deleteUser");
         users.delete(userId);
     }
 
     @Nullable
-    public User getUser(@Nonnull ObjectId uuid){
+    public User getUser(@Nonnull ObjectId uuid) {
         log.debug("UserController > getUser({})", uuid);
         return users.get(uuid);
     }
 
     @Nullable
-    public Collection<User> getUsers(){
+    public Collection<User> getUsers() {
         log.debug("UserController > getUsers");
         return users.getAll();
     }

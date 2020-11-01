@@ -4,14 +4,13 @@ import edu.northeastern.cs5500.delivery.exception.AlreadyExistsException;
 import edu.northeastern.cs5500.delivery.exception.BadRequestException;
 import edu.northeastern.cs5500.delivery.model.Order;
 import edu.northeastern.cs5500.delivery.repository.GenericRepository;
+import java.util.Collection;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
-
-import java.util.Collection;
 
 @Singleton
 @Slf4j
@@ -42,13 +41,13 @@ public class OrderController {
     }
 
     @Nonnull
-    public Order getOrder(@Nonnull ObjectId uuid){
+    public Order getOrder(@Nonnull ObjectId uuid) {
         log.debug("OrderController > getOrder({}", uuid);
         return orders.get(uuid);
     }
 
     @Nonnull
-    public Collection<Order> getOrders(){
+    public Collection<Order> getOrders() {
         log.debug("OrderController > getOrders()");
         return orders.getAll();
     }
@@ -97,6 +96,4 @@ public class OrderController {
         order.setStatus(newStatus);
         return orders.update(order);
     }
-
-
 }

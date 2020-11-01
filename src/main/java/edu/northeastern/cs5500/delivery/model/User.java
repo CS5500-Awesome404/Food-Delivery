@@ -1,8 +1,7 @@
 package edu.northeastern.cs5500.delivery.model;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
 import lombok.Data;
 import org.bson.types.ObjectId;
 
@@ -16,7 +15,6 @@ public class User implements Model {
 
     // Temporary meals user has put into cart before placing order.
     List<ObjectId> mealCart;
-
 
     /** @return true if this order is valid */
     @JsonIgnore
