@@ -55,6 +55,9 @@ dependencies {
 
     // MongoDB client
     implementation 'org.mongodb:mongodb-driver:3.12.1'
+
+    // Mockito Test
+    testImplementation 'org.mockito:mockito-core:2.22.0'
 }
 
 application {

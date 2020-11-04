@@ -12,10 +12,13 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 @Slf4j
 public class CourierController {
+    static final Logger LOGGER = LoggerFactory.getLogger(CourierController.class);
 
     private final GenericRepository<Courier> couriers;
     private final Provider<OrderController> orderControllerProvider;
@@ -29,7 +32,7 @@ public class CourierController {
 
     @Nonnull
     public Courier addCourier(Courier courier) throws BadRequestException, AlreadyExistsException {
-        log.debug("CourierController > createNewCourier");
+        LOGGER.debug("CourierController > createNewCourier");
         if (!courier.isValid()) {
             throw new BadRequestException();
         }
@@ -42,18 +45,18 @@ public class CourierController {
 
     @Nonnull
     public Courier getCourier(@Nonnull ObjectId uuid) {
-        log.debug("CourierController > getCourier({})", uuid);
+        LOGGER.debug("CourierController > getCourier({})", uuid);
         return couriers.get(uuid);
     }
 
     @Nonnull
     public Collection<Courier> getCouriers() {
-        log.debug("CourierController > getCouriers()");
+        LOGGER.debug("CourierController > getCouriers()");
         return couriers.getAll();
     }
 
     public void deleteCourier(@Nonnull ObjectId courierId) throws NotExistsException {
-        log.debug("CourierController > deleteCourier()");
+        LOGGER.debug("CourierController > deleteCourier()");
         couriers.delete(courierId);
     }
 

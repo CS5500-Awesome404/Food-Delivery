@@ -16,4 +16,12 @@ public class Courier implements Model {
     public boolean isValid() {
         return true;
     }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
 }
