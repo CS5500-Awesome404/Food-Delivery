@@ -14,11 +14,20 @@ public class User implements Model {
     String password;
 
     // Temporary meals user has put into cart before placing order.
-    List<ObjectId> mealCart;
+    Cart mealCart;
+    List<Order> orders;
 
     /** @return true if this order is valid */
     @JsonIgnore
     public boolean isValid() {
-        return true;
+
+        return name != null
+                && !name.isEmpty()
+                && email != null
+                && !email.isEmpty()
+                && address != null
+                && !address.isEmpty()
+                && password != null
+                && !password.isEmpty();
     }
 }

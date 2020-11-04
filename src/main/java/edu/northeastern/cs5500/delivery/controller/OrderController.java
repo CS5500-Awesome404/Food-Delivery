@@ -2,9 +2,13 @@ package edu.northeastern.cs5500.delivery.controller;
 
 import edu.northeastern.cs5500.delivery.exception.AlreadyExistsException;
 import edu.northeastern.cs5500.delivery.exception.BadRequestException;
+import edu.northeastern.cs5500.delivery.model.Cart;
+import edu.northeastern.cs5500.delivery.model.Meal;
 import edu.northeastern.cs5500.delivery.model.Order;
+import edu.northeastern.cs5500.delivery.model.User;
 import edu.northeastern.cs5500.delivery.repository.GenericRepository;
 import java.util.Collection;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -25,6 +29,13 @@ public class OrderController {
         this.userControllerProvider = userControllerProvider;
     }
 
+    /**
+     * Add a new Order to repository
+     *
+     * @param order Order object
+     * @return Order
+     * @throws Exception Order is invalid or order already exist
+     */
     @Nonnull
     public Order addNewOrder(@Nonnull Order order) throws Exception {
         log.debug("OrderController > createNewOrder(...)");
@@ -57,10 +68,33 @@ public class OrderController {
         orders.delete(orderId);
     }
 
+    public Order createNewOrder(User user) {
+        Order newOrder = new Order();
+        newOrder.setOrderContent(user.getMealCart());
+        newOrder.setStatus(Order.Status.CREATED);
+        newOrder.setTotal(calTotal(user.getMealCart()));
+        return orders.add(newOrder);
+    }
+
+    private Double calTotal(Cart cart) {
+        Double total = 0.0;
+        for (Map.Entry<Meal, Integer> entry : cart.getMeals().entrySet()) {
+            total += entry.getKey().getMealPrice() * entry.getValue();
+        }
+        return total;
+    }
+
+    public Order cancelOneOrder(Order order) throws Exception {
+        return updateStatus(order, Order.Status.CANCELLED);
+    }
+
+    public Order confirmOneOrder(Order order) throws Exception {
+        return updateStatus(order, Order.Status.CONFIRMED);
+    }
+
     @Nonnull
-    public Order updateStatus(@Nonnull ObjectId orderId, Order.Status newStatus) throws Exception {
+    public Order updateStatus(@Nonnull Order order, Order.Status newStatus) throws Exception {
         log.debug("OrderController > updateStatus(...)");
-        Order order = orders.get(orderId);
         // No updates, return directly.
         if (order.getStatus().equals(newStatus)) {
             return order;
@@ -68,12 +102,14 @@ public class OrderController {
 
         switch (order.getStatus()) {
             case CREATED:
-                if (!newStatus.equals(Order.Status.PREPARING)) {
+                if (!(newStatus.equals(Order.Status.PREPARING)
+                        || newStatus.equals(Order.Status.CANCELLED))) {
                     throw new BadRequestException();
                 }
                 break;
             case PREPARING:
-                if (!newStatus.equals(Order.Status.READY)) {
+                if (!(newStatus.equals(Order.Status.READY)
+                        || newStatus.equals(Order.Status.CANCELLED))) {
                     throw new BadRequestException();
                 }
                 break;
@@ -88,6 +124,12 @@ public class OrderController {
                 }
                 break;
             case DELIVERED:
+                if (!newStatus.equals(Order.Status.CONFIRMED)) {
+                    throw new BadRequestException();
+                }
+                break;
+            case CONFIRMED:
+            case CANCELLED:
                 throw new BadRequestException();
             default:
                 break;

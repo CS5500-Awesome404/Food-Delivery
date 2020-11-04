@@ -16,11 +16,6 @@ public class ModelModule {
     }
 
     @Provides
-    public Class<Meal> provideMealClass() {
-        return Meal.class;
-    }
-
-    @Provides
     public Class<Order> provideOrderClass() {
         return Order.class;
     }

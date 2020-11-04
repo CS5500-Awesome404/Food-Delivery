@@ -2,6 +2,8 @@ package edu.northeastern.cs5500.delivery.controller;
 
 import edu.northeastern.cs5500.delivery.exception.AlreadyExistsException;
 import edu.northeastern.cs5500.delivery.exception.BadRequestException;
+import edu.northeastern.cs5500.delivery.exception.NotExistsException;
+import edu.northeastern.cs5500.delivery.model.Meal;
 import edu.northeastern.cs5500.delivery.model.Order;
 import edu.northeastern.cs5500.delivery.model.Restaurant;
 import edu.northeastern.cs5500.delivery.repository.GenericRepository;
@@ -62,41 +64,40 @@ public class RestaurantController {
         restaurants.delete(id);
     }
 
-    public void updateRestaurantAddMeal(ObjectId restaurantId, ObjectId mealId)
+    public void updateRestaurantAddMeal(Restaurant restaurant, Meal meal)
             throws AlreadyExistsException {
-        Restaurant restaurant = restaurants.get(restaurantId);
-        List<ObjectId> newMenu = restaurant.getMenu();
+
+        List<Meal> newMenu = restaurant.getMenu();
         // check of duplication.
-        if (mealId != null && restaurant.getMenu().contains(mealId)) {
+        if (restaurant.getMenu().contains(meal)) {
             throw new AlreadyExistsException();
         }
-        newMenu.add(mealId);
+        newMenu.add(meal);
         restaurant.setMenu(newMenu);
         restaurants.update(restaurant);
     }
 
-    public void updateRestaurantRemoveMeal(ObjectId restaurantId, ObjectId mealId)
-            throws AlreadyExistsException {
-        Restaurant restaurant = restaurants.get(restaurantId);
-        List<ObjectId> newMenu = restaurant.getMenu();
+    public void updateRestaurantRemoveMeal(Restaurant restaurant, Meal meal) throws Exception {
+        List<Meal> newMenu = restaurant.getMenu();
         // check that mealId exists.
-        if (mealId != null && restaurant.getMenu().contains(mealId)) {
-            throw new AlreadyExistsException();
+        if (!restaurant.getMenu().contains(meal)) {
+            throw new NotExistsException();
         }
-        newMenu.remove(mealId);
+        newMenu.remove(meal);
         restaurant.setMenu(newMenu);
         restaurants.update(restaurant);
     }
 
-    public void updateRestaurantName(ObjectId restaurantId, String newRestaurantName) {
-        Restaurant restaurant = restaurants.get(restaurantId);
+    public void updateRestaurantName(Restaurant restaurant, String newRestaurantName) {
         restaurant.setName(newRestaurantName);
         restaurants.update(restaurant);
     }
 
-    public void makeFoodForOrder(ObjectId orderId) {
+    public void makeFoodForOrder(Order order) throws Exception {
         // set up a timer that will use oder controller to update
         // status.
+        OrderController orderController = orderControllerProvider.get();
+        orderController.updateStatus(order, Order.Status.PREPARING);
 
         TimerTask foodReady =
                 new TimerTask() {
@@ -105,7 +106,7 @@ public class RestaurantController {
                         synchronized (this) {
                             OrderController orderController = orderControllerProvider.get();
                             try {
-                                orderController.updateStatus(orderId, Order.Status.READY);
+                                orderController.updateStatus(order, Order.Status.READY);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
