@@ -1,7 +1,6 @@
 package edu.northeastern.cs5500.delivery.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.List;
 import lombok.Data;
 import org.bson.types.ObjectId;
 
@@ -12,17 +11,21 @@ public class Order implements Model {
         PREPARING,
         READY,
         DELIVERING,
-        DELIVERED;
+        DELIVERED,
+        CONFIRMED,
+        CANCELLED;
     }
 
     ObjectId id;
     Status status;
-    List<ObjectId> orderContent;
+    Cart orderContent;
     ObjectId courierId = null;
+    Double total = 0.0;
 
     /** @return true if this order is valid */
     @JsonIgnore
     public boolean isValid() {
-        return true;
+
+        return orderContent != null;
     }
 }

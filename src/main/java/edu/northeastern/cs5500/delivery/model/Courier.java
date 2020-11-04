@@ -14,6 +14,7 @@ public class Courier implements Model {
     /** @return true if this delivery is valid */
     @JsonIgnore
     public boolean isValid() {
-        return true;
+
+        return courierName != null && !courierName.isEmpty();
     }
 }

@@ -2,12 +2,12 @@ package edu.northeastern.cs5500.delivery.controller;
 
 import edu.northeastern.cs5500.delivery.exception.AlreadyExistsException;
 import edu.northeastern.cs5500.delivery.exception.BadRequestException;
+import edu.northeastern.cs5500.delivery.model.Cart;
+import edu.northeastern.cs5500.delivery.model.Meal;
 import edu.northeastern.cs5500.delivery.model.Order;
 import edu.northeastern.cs5500.delivery.model.User;
 import edu.northeastern.cs5500.delivery.repository.GenericRepository;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -38,62 +38,45 @@ public class UserController {
         user1.setPassword("abc@@@");
         try {
             addNewUser(user1);
-        } catch (AlreadyExistsException e) {
+        } catch (AlreadyExistsException | BadRequestException e) {
             e.printStackTrace();
-        } catch (BadRequestException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    // create new order
     // clean up the cart
-    public Order createNewOrderFromCurrentCart(User user) throws Exception {
+    public Order convertCartToOrder(User user) throws Exception {
         // 1. create new order
         OrderController orderController = orderControllerProvider.get();
-        Order newOrder = new Order();
-
-        // 2. add the meals in userCart to the new generated order
-        List<ObjectId> userCart = user.getMealCart();
-        newOrder.setOrderContent(userCart);
-        newOrder.setStatus(Order.Status.CREATED);
+        Order newOrder = orderController.createNewOrder(user);
 
         // 3. clean up user's cart
-        user.setMealCart(new ArrayList<>());
+        user.setMealCart(new Cart());
         users.update(user);
 
-        return orderController.addNewOrder(newOrder);
+        return newOrder;
     }
 
     // Reminder: revise the quantity of same meals in UI
-    public User addNewMealToCart(ObjectId userId, ObjectId mealId) {
-        // 1. get the user and its cart
-        User user = users.get(userId);
-        List<ObjectId> userCart = user.getMealCart();
-
-        // 2. add meal to the cart
-        // it can be the same meal, so no duplicate exception check here
-        userCart.add(mealId);
-        user.setMealCart(userCart);
+    public User addNewMealToCart(User user, Meal meal) {
+        Cart userCart = user.getMealCart();
+        userCart.getMeals().compute(meal, (k, v) -> v == null ? 1 : v + 1);
 
         // 2. return User for getting all added meals
         return users.update(user);
     }
 
     @Nonnull
-    public User removeMealFromCart(@Nonnull ObjectId userId, @Nonnull ObjectId mealId)
-            throws Exception {
+    public User removeMealFromCart(@Nonnull User user, @Nonnull Meal meal) throws Exception {
         // 1. get the user and its cart
-        User user = users.get(userId);
-        List<ObjectId> userCart = user.getMealCart();
+        Cart cart = user.getMealCart();
 
-        // 2. check the mealId, Nonnull did this work?
-
-        // 3. Remove meal
-        userCart.remove(mealId);
+        cart.getMeals().compute(meal, (k, v) -> v - 1 == 0 ? null : v - 1);
         return users.update(user);
     }
 
-    public User addNewUser(User user) throws BadRequestException, AlreadyExistsException {
+    public User addNewUser(User user) throws Exception {
         log.debug("UserController > createNewUser");
         if (!user.isValid()) {
             throw new BadRequestException();

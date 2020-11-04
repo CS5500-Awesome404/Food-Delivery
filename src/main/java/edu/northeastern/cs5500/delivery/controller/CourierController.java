@@ -57,7 +57,7 @@ public class CourierController {
         couriers.delete(courierId);
     }
 
-    public void pickUpAnOrder(ObjectId courierId, ObjectId orderId)
+    public void pickUpAnOrder(ObjectId courierId, Order order)
             throws NotExistsException, BadRequestException {
         // check courierId
         if (courierId == null) {
@@ -66,7 +66,6 @@ public class CourierController {
 
         // check order status
         OrderController orderController = orderControllerProvider.get();
-        Order order = orderController.getOrder(orderId);
         if (!order.getStatus().equals("READY")) {
             throw new BadRequestException();
         }
@@ -74,8 +73,7 @@ public class CourierController {
         order.setStatus(Order.Status.DELIVERING);
     }
 
-    public void deliveryAnOrder(ObjectId courierId, ObjectId orderId)
-            throws NotExistsException, BadRequestException {
+    public void deliveryAnOrder(ObjectId courierId, Order order) throws Exception {
         // check courierId
         if (courierId == null) {
             throw new NotExistsException();
@@ -83,7 +81,6 @@ public class CourierController {
 
         // check order status
         OrderController orderController = orderControllerProvider.get();
-        Order order = orderController.getOrder(orderId);
         if (!order.getStatus().equals("DELIVERING")) {
             throw new BadRequestException();
         }

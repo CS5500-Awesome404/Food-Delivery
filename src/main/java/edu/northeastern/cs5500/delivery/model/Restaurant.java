@@ -9,12 +9,13 @@ import org.bson.types.ObjectId;
 public class Restaurant {
     ObjectId id;
     // Ids of all meals provided by this restaurant.
-    List<ObjectId> menu;
+    List<Meal> menu;
     String name;
 
     /** @return true if this order is valid */
     @JsonIgnore
     public boolean isValid() {
-        return true;
+
+        return name != null && !name.isEmpty();
     }
 }
