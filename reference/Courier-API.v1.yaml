@@ -1,0 +1,103 @@
+openapi: 3.0.0
+info:
+  title: Courier API
+  version: '1.0'
+  description: 'Add a courier, get a courier, get the collection of couriers, delete a courier'
+servers:
+  - url: 'http://localhost:5000'
+paths:
+  /courier:
+    get:
+      summary: Get courier collection
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/courier'
+      operationId: get-courier
+      parameters: []
+      description: Get a collection of couriers.
+    put:
+      summary: Add a courier to the collection
+      operationId: put-courier
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/courier'
+      description: Add a courier to the collection
+      parameters:
+        - schema: {}
+          in: query
+          name: courier
+          description: Courier Object
+          required: true
+  '/courier/{courierId}':
+    parameters:
+      - schema:
+          type: string
+        name: courierId
+        in: path
+        required: true
+    get:
+      summary: Get a courier
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/courier'
+      operationId: get-courier-courierId
+      description: Get a courier
+      parameters:
+        - schema: {}
+          in: query
+          name: courierId
+          description: Courier ID
+          required: true
+    delete:
+      summary: Delete a courier
+      operationId: delete-courier-courierId
+      responses:
+        '204':
+          description: No Content
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      description: Delete a courier
+      parameters:
+        - schema: {}
+          in: query
+          name: courierId
+          required: true
+components:
+  schemas:
+    courier:
+      title: courier
+      type: object
+      properties:
+        courierId:
+          type: object
+        courierName:
+          type: string
+        location:
+          type: string
+      description: ''
+  securitySchemes:
+    API Key:
+      name: apikey
+      type: apiKey
+      in: query
+security:
+  - API Key: []

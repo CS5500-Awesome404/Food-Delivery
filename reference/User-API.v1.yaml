@@ -1,0 +1,117 @@
+openapi: 3.0.0
+info:
+  title: User API
+  version: '1.0'
+  description: 'Get a user, get the collection of users, update a user, delete a user.'
+servers:
+  - url: 'http://localhost:5000'
+paths:
+  /user:
+    get:
+      summary: Get user collection
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/user'
+      operationId: get-user
+      description: Get the collection of users
+    put:
+      summary: Add a user to the collection
+      operationId: put-user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+      description: Add a user to the collection
+      parameters:
+        - schema: {}
+          in: query
+          name: userId
+          description: User ID
+          required: true
+  '/user/{userId}':
+    parameters:
+      - schema:
+          type: string
+        name: userId
+        in: path
+        required: true
+    get:
+      summary: Get a user
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+      operationId: get-user-userId
+      description: Get a user
+      parameters:
+        - schema: {}
+          in: query
+          name: userId
+          required: true
+          description: User ID
+    put:
+      summary: Update a user
+      operationId: put-user-userId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+      description: Update a user
+      parameters:
+        - schema: {}
+          in: query
+          name: userId
+          required: true
+          description: User ID
+    delete:
+      summary: Delete a user
+      operationId: delete-user-userId
+      responses:
+        '204':
+          description: No Content
+      description: Delete a user
+      parameters:
+        - schema: {}
+          in: query
+          name: userId
+          required: true
+components:
+  schemas:
+    user:
+      title: user
+      type: object
+      properties:
+        userId:
+          type: object
+        userName:
+          type: string
+        userEmail:
+          type: string
+        userAddress:
+          type: string
+        password:
+          type: string
+  securitySchemes:
+    API Key:
+      name: apikey
+      type: apiKey
+      in: query
+security:
+  - API Key: []

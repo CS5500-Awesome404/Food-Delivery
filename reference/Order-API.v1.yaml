@@ -1,0 +1,133 @@
+openapi: 3.0.0
+info:
+  title: Order API
+  version: '1.0'
+  description: 'Add new order, get an order, get a collection of orders, delete an order, update order status.'
+servers:
+  - url: 'http://localhost:5000'
+paths:
+  /order:
+    get:
+      summary: Get orders
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/order'
+      operationId: get-order
+      description: Get orders.
+      parameters: []
+    put:
+      summary: Add an order to the collection
+      operationId: put-order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order'
+              examples:
+                example-1:
+                  value:
+                    id: {}
+                    status: {}
+                    orderContent:
+                      - {}
+                    courierId: {}
+      parameters:
+        - schema: {}
+          in: query
+          name: orderId
+          description: Order ID
+          required: true
+      description: Add an order to the order collection.
+  '/order/{orderId}':
+    parameters:
+      - schema:
+          type: string
+        name: orderId
+        in: path
+        required: true
+    get:
+      summary: Get an order
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order'
+      operationId: get-order-orderId
+      description: Get an order.
+      parameters:
+        - schema: {}
+          in: query
+          name: orderId
+          description: Order ID
+          required: true
+    put:
+      summary: Update an order
+      operationId: put-order-orderId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order'
+      description: Update an order.
+      parameters:
+        - schema: {}
+          in: query
+          name: orderStatus
+          description: Order Status
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: orderId
+          description: Order ID
+          required: true
+    delete:
+      summary: Delete an order
+      operationId: delete-order-orderId
+      responses:
+        '204':
+          description: No Content
+      description: Delete an order
+      parameters:
+        - schema: {}
+          in: query
+          name: orderId
+          description: Order ID
+          required: true
+components:
+  schemas:
+    order:
+      title: Order
+      type: object
+      properties:
+        id:
+          type: object
+        status:
+          type: object
+        orderContent:
+          type: array
+          items:
+            type: object
+        courierId:
+          type: object
+  securitySchemes:
+    API Key:
+      name: apikey
+      type: apiKey
+      in: query
+security:
+  - API Key - 1: []
