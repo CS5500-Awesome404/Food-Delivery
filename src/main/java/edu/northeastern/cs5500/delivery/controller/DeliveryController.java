@@ -45,7 +45,7 @@ public class DeliveryController {
 
     @Nullable
     public Delivery getDelivery(@Nonnull ObjectId uuid) {
-        log.debug("DeliveryController > getDelivery({})", uuid);
+        log.info("DeliveryController > getDelivery({})", uuid);
         return deliveries.get(uuid);
     }
 
