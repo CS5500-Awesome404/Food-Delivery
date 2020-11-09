@@ -2,12 +2,10 @@ package edu.northeastern.cs5500.delivery.controller;
 
 import edu.northeastern.cs5500.delivery.exception.AlreadyExistsException;
 import edu.northeastern.cs5500.delivery.exception.BadRequestException;
-import edu.northeastern.cs5500.delivery.model.Cart;
-import edu.northeastern.cs5500.delivery.model.Meal;
-import edu.northeastern.cs5500.delivery.model.Order;
-import edu.northeastern.cs5500.delivery.model.User;
+import edu.northeastern.cs5500.delivery.model.*;
 import edu.northeastern.cs5500.delivery.repository.GenericRepository;
 import java.util.Collection;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -61,7 +59,18 @@ public class UserController {
     // Reminder: revise the quantity of same meals in UI
     public User addNewMealToCart(User user, Meal meal) {
         Cart userCart = user.getMealCart();
-        userCart.getMeals().compute(meal, (k, v) -> v == null ? 1 : v + 1);
+        Optional<MealQuantity> existingMeal = userCart.getMeals().stream().filter(
+                mealQuantity -> mealQuantity.getMeal().equals(meal)
+        ).findAny();
+
+        if (existingMeal.isPresent()) {
+            existingMeal.get().setQuantity(existingMeal.get().getQuantity() + 1);
+        } else {
+            MealQuantity newMeal = new MealQuantity();
+            newMeal.setMeal(meal);
+            newMeal.setQuantity(1);
+            userCart.getMeals().add(newMeal);
+        }
 
         // 2. return User for getting all added meals
         return users.update(user);
@@ -70,9 +79,21 @@ public class UserController {
     @Nonnull
     public User removeMealFromCart(@Nonnull User user, @Nonnull Meal meal) throws Exception {
         // 1. get the user and its cart
-        Cart cart = user.getMealCart();
+        Cart userCart = user.getMealCart();
+        Optional<MealQuantity> existingMeal = userCart.getMeals().stream().filter(
+                mealQuantity -> mealQuantity.getMeal().equals(meal)
+        ).findAny();
 
-        cart.getMeals().compute(meal, (k, v) -> v - 1 == 0 ? null : v - 1);
+        if (existingMeal.isPresent()) {
+            Integer newQuantity = existingMeal.get().getQuantity() - 1;
+            if (newQuantity == 0) {
+                userCart.getMeals().remove(existingMeal.get());
+            } else {
+                existingMeal.get().setQuantity(newQuantity);
+            }
+        } else {
+            throw new BadRequestException();
+        }
         return users.update(user);
     }
 
