@@ -47,6 +47,7 @@ public class MongoDBService implements Service {
 
         MongoClient mongoClient = MongoClients.create(mongoClientSettings);
         mongoDatabase = mongoClient.getDatabase(connectionString.getDatabase());
+        log.info("Successfully connected to mangodb database");
     }
 
     @Override

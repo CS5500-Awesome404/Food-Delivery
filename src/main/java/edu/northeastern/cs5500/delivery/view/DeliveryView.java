@@ -43,7 +43,7 @@ public class DeliveryView implements View {
                 "/delivery/:id",
                 (request, response) -> {
                     final String paramId = request.params(":id");
-                    log.debug("/delivery/:id<{}>", paramId);
+                    log.info("/delivery/:id<{}>", paramId);
                     final ObjectId id = new ObjectId(paramId);
                     Delivery delivery = deliveryController.getDelivery(id);
                     if (delivery == null) {
@@ -69,7 +69,7 @@ public class DeliveryView implements View {
                     delivery = deliveryController.addDelivery(delivery);
 
                     response.redirect(
-                            String.format("/delivery/{}", delivery.getId().toHexString()), 301);
+                            String.format("/delivery/%s", delivery.getId().toHexString()), 301);
                     return delivery;
                 });
 
