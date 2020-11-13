@@ -138,4 +138,9 @@ public class OrderController {
         order.setStatus(newStatus);
         return orders.update(order);
     }
+
+    public void updateOrder(@Nonnull Order order) throws Exception {
+        log.debug("OrderController > updateOrder(...)");
+        orders.update(order);
+    }
 }
