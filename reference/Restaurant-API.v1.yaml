@@ -33,12 +33,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/restaurant'
-      description: Add a new restaurant to collection.
+      description: 'Create a new restaurant. '
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/restaurant'
+            examples:
+              example-1:
+                value:
+                  id: 5fae04aaa40ba56ebddddf8a
+                  menu:
+                    - mealName: hamburger
+                      mealPrice: 0
+                  name: hamburger wang
+        description: ''
     put:
       summary: UpdateRestaurant
       operationId: put-restaurant
@@ -49,7 +58,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/restaurant'
-      description: Update a restaurant.
+      description: 'Update restaurant name, restaurant menu or both.'
       requestBody:
         content:
           application/json:
@@ -64,13 +73,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/restaurant'
-      description: Delete a restaurant.
+                type: object
+                properties:
+                  restaurantId:
+                    type: string
+      description: Delete a restaurant by providing the restaurantId.
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/restaurant'
+              type: object
+              properties:
+                restaurantId:
+                  type: string
   '/restaurant/{:id}':
     parameters:
       - schema:
@@ -90,12 +105,7 @@ paths:
                 $ref: '#/components/schemas/restaurant'
       operationId: get-restaurant-restaurantId
       description: Get a restaurant from the collection by Id
-      parameters:
-        - schema: {}
-          in: query
-          name: ':id'
-          description: Restaurant ID
-          required: true
+      parameters: []
 components:
   schemas:
     restaurant:
@@ -104,16 +114,20 @@ components:
       properties:
         id:
           type: string
+          default: 5fae04aaa40ba56ebddddf8a
         menu:
-          type: array
-          items:
-            type: string
+          $ref: '#/components/schemas/menu'
         name:
           type: string
       required:
         - id
         - menu
         - name
+    menu:
+      title: menu
+      type: array
+      items:
+        $ref: ./Order-API.v1.yaml#/components/schemas/meal
   securitySchemes:
     'API Key ':
       name: apikey

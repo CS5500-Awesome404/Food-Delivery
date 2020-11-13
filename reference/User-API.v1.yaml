@@ -32,11 +32,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/user'
       description: Add a user to the collection
-      parameters:
-        - schema: {}
-          in: query
-          name: userId
-          required: true
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userInfo'
     put:
       summary: UpdateUser
       operationId: put-user
@@ -46,14 +47,14 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties: {}
-      description: Update a user
-      parameters:
-        - schema: {}
-          in: query
-          name: userId
-          required: true
+                $ref: '#/components/schemas/user'
+      description: 'Update the userinfo including name, email, address and password.'
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userInfo'
     delete:
       summary: DeleteUser
       operationId: delete-user
@@ -63,14 +64,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user'
-      description: Delete a user
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: userId
-          required: true
+                type: object
+                properties:
+                  id:
+                    type: string
+      description: Delete a user by providing id
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
   '/user/{:id}':
     parameters:
       - schema:
@@ -79,7 +86,7 @@ paths:
         in: path
         required: true
     get:
-      summary: Get a user
+      summary: GetUserById
       tags: []
       responses:
         '200':
@@ -90,28 +97,78 @@ paths:
                 $ref: '#/components/schemas/user'
       operationId: get-user-userId
       description: Get a user
-      parameters:
-        - schema: {}
-          in: query
-          name: userId
-          required: true
-          description: User ID
+      parameters: []
+  /user/cart:
+    put:
+      summary: UpdateCart
+      operationId: put-user-cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cart'
+      description: UpdateCart can be used for adding or removing meal from a cart. The operation only accepts either ADD or REMOVE
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                operation:
+                  type: string
+                  enum:
+                    - ADD
+                    - REMOVE
+                id:
+                  type: string
+                mealName:
+                  type: string
+                mealPrice:
+                  type: string
 components:
   schemas:
+    userInfo:
+      title: userInfo
+      type: object
+      properties:
+        id:
+          type: string
+          default: 5fae04aaa40ba56ebddddf8a
+        name:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        password:
+          type: string
     user:
       title: user
       type: object
       properties:
-        userId:
-          type: object
-        userName:
+        id:
           type: string
-        userEmail:
+        name:
           type: string
-        userAddress:
+        email:
+          type: string
+        address:
           type: string
         password:
           type: string
+        mealCart:
+          $ref: '#/components/schemas/cart'
+        orders:
+          type: array
+          items:
+            $ref: ./Order-API.v1.yaml#/components/schemas/order
+    cart:
+      title: cart
+      type: array
+      items:
+        $ref: ./Order-API.v1.yaml#/components/schemas/mealQuantity
   securitySchemes:
     API Key:
       name: apikey
