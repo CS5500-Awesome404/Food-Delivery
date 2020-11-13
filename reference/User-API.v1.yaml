@@ -8,7 +8,7 @@ servers:
 paths:
   /user:
     get:
-      summary: Get user collection
+      summary: GetUsers
       tags: []
       responses:
         '200':
@@ -21,9 +21,9 @@ paths:
                   $ref: '#/components/schemas/user'
       operationId: get-user
       description: Get the collection of users
-    put:
-      summary: Add a user to the collection
-      operationId: put-user
+    post:
+      summary: AddUser
+      operationId: post-user
       responses:
         '200':
           description: OK
@@ -36,13 +36,46 @@ paths:
         - schema: {}
           in: query
           name: userId
-          description: User ID
           required: true
-  '/user/{userId}':
+    put:
+      summary: UpdateUser
+      operationId: put-user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      description: Update a user
+      parameters:
+        - schema: {}
+          in: query
+          name: userId
+          required: true
+    delete:
+      summary: DeleteUser
+      operationId: delete-user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+      description: Delete a user
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: userId
+          required: true
+  '/user/{:id}':
     parameters:
       - schema:
           type: string
-        name: userId
+        name: ':id'
         in: path
         required: true
     get:
@@ -63,35 +96,6 @@ paths:
           name: userId
           required: true
           description: User ID
-    put:
-      summary: Update a user
-      operationId: put-user-userId
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/user'
-      description: Update a user
-      parameters:
-        - schema: {}
-          in: query
-          name: userId
-          required: true
-          description: User ID
-    delete:
-      summary: Delete a user
-      operationId: delete-user-userId
-      responses:
-        '204':
-          description: No Content
-      description: Delete a user
-      parameters:
-        - schema: {}
-          in: query
-          name: userId
-          required: true
 components:
   schemas:
     user:
