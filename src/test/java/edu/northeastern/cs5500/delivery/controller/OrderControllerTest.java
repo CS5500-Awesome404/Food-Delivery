@@ -1,15 +1,12 @@
 package edu.northeastern.cs5500.delivery.controller;
 
+import static org.junit.Assert.*;
+
 import edu.northeastern.cs5500.delivery.model.*;
 import edu.northeastern.cs5500.delivery.repository.InMemoryRepository;
+import javax.inject.Provider;
 import org.junit.Before;
 import org.junit.Test;
-
-import javax.inject.Provider;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import static org.junit.Assert.*;
 
 public class OrderControllerTest {
 
@@ -20,15 +17,16 @@ public class OrderControllerTest {
 
     @Before
     public void setUp() {
-        orderController = new OrderController(new InMemoryRepository<>(),
-                new Provider<UserController>() {
-                    @Override
-                    public UserController get() {
-                        return userController;
-                    }
-                });
+        orderController =
+                new OrderController(
+                        new InMemoryRepository<>(),
+                        new Provider<UserController>() {
+                            @Override
+                            public UserController get() {
+                                return userController;
+                            }
+                        });
         userController = new UserController(new InMemoryRepository<>(), () -> orderController);
-
 
         Meal meal1 = new Meal();
         meal1.setMealName("Donut");
@@ -48,13 +46,13 @@ public class OrderControllerTest {
         cart1.getMeals().add(mealQuantity1);
         cart1.getMeals().add(mealQuantity2);
 
-        user1 = new User();
+        user1 = User.builder().build();
 
         user1.setMealCart(cart1);
     }
 
     @Test
-    public void testOrderNotExist(){
+    public void testOrderNotExist() {
         assertTrue(orderController.getOrders().isEmpty());
     }
 
@@ -80,11 +78,10 @@ public class OrderControllerTest {
         assertEquals(order.getStatus(), Order.Status.CANCELLED);
     }
 
-    @Test (expected = Exception.class)
+    @Test(expected = Exception.class)
     public void testUnableConfirmedOneOrder() throws Exception {
         Order order = orderController.createNewOrder(user1);
         orderController.confirmOneOrder(order);
         assertEquals(order.getStatus(), Order.Status.CONFIRMED);
     }
-
 }

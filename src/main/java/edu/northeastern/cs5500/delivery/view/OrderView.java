@@ -9,7 +9,10 @@ import static spark.Spark.put;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.northeastern.cs5500.delivery.JsonTransformer;
 import edu.northeastern.cs5500.delivery.controller.OrderController;
+import edu.northeastern.cs5500.delivery.controller.UserController;
 import edu.northeastern.cs5500.delivery.model.Order;
+import edu.northeastern.cs5500.delivery.model.User;
+import java.util.HashMap;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +27,7 @@ public class OrderView implements View {
 
     @Inject JsonTransformer jsonTransformer;
     @Inject OrderController orderController;
+    @Inject UserController userController;
 
     @Override
     public void register() {
@@ -57,18 +61,16 @@ public class OrderView implements View {
                 "/order",
                 (request, response) -> {
                     ObjectMapper mapper = new ObjectMapper();
-                    Order order = mapper.readValue(request.body(), Order.class);
-                    if (!order.isValid()) {
-                        response.status(400);
-                        return "";
+                    HashMap<String, String> map = mapper.readValue(request.body(), HashMap.class);
+
+                    User user = userController.getUser(new ObjectId(map.get(ViewUtils.USER_ID)));
+
+                    if (user == null) {
+                        halt(404);
                     }
 
-                    // Ignore the user-provided ID if there is one
-                    order.setId(null);
-                    order = orderController.addNewOrder(order);
-                    response.redirect(
-                            String.format("/restaurant/%s", order.getId().toHexString()), 301);
-                    return order;
+                    // place order 
+                    return userController.convertCartToOrder(user);
                 },
                 jsonTransformer);
 

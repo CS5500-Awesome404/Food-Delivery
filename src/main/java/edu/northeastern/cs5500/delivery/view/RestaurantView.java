@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.northeastern.cs5500.delivery.JsonTransformer;
 import edu.northeastern.cs5500.delivery.controller.RestaurantController;
 import edu.northeastern.cs5500.delivery.model.Restaurant;
+import java.util.HashMap;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -90,10 +91,11 @@ public class RestaurantView implements View {
                 "/restaurant",
                 (request, response) -> {
                     ObjectMapper mapper = new ObjectMapper();
-                    Restaurant restaurant = mapper.readValue(request.body(), Restaurant.class);
+                    HashMap<String, String> map = mapper.readValue(request.body(), HashMap.class);
 
-                    restaurantController.deleteRestaurant(restaurant.getId());
-                    return restaurant;
+                    restaurantController.deleteRestaurant(
+                            new ObjectId(map.get(ViewUtils.RESTAURANT_ID)));
+                    return map;
                 },
                 jsonTransformer);
     }
