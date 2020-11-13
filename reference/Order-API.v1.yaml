@@ -8,7 +8,7 @@ servers:
 paths:
   /order:
     get:
-      summary: Get orders
+      summary: GetAllOrders
       tags: []
       responses:
         '200':
@@ -20,11 +20,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/order'
       operationId: get-order
-      description: Get orders.
+      description: Get all the orders in the collection.
       parameters: []
-    put:
-      summary: Add an order to the collection
-      operationId: put-order
+    post:
+      summary: AddOrder
+      operationId: post-order
       responses:
         '200':
           description: OK
@@ -32,21 +32,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/order'
-              examples:
-                example-1:
-                  value:
-                    id: {}
-                    status: {}
-                    orderContent:
-                      - {}
-                    courierId: {}
-      parameters:
-        - schema: {}
-          in: query
-          name: orderId
-          description: Order ID
-          required: true
-      description: Add an order to the order collection.
+      description: Add an order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order'
   '/order/{orderId}':
     parameters:
       - schema:
@@ -115,15 +106,25 @@ components:
       type: object
       properties:
         id:
-          type: object
+          type: string
         status:
-          type: object
+          type: string
         orderContent:
           type: array
           items:
-            type: object
+            $ref: '#/components/schemas/cartItem'
         courierId:
-          type: object
+          type: string
+        total:
+          type: number
+    cartItem:
+      title: CartItem
+      type: object
+      properties:
+        Meal:
+          $ref: ./Meal-API.v1.yaml#/components/schemas/meal
+        NumOfMeal:
+          type: integer
   securitySchemes:
     API Key:
       name: apikey
