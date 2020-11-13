@@ -20,7 +20,7 @@ public class Order implements Model {
     Status status;
     Cart orderContent;
     ObjectId courierId = null;
-    Double total = 0.0;
+    String total = "0.00";
 
     /** @return true if this order is valid */
     @JsonIgnore
