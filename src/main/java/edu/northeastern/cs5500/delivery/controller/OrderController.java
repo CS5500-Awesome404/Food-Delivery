@@ -2,11 +2,10 @@ package edu.northeastern.cs5500.delivery.controller;
 
 import edu.northeastern.cs5500.delivery.exception.AlreadyExistsException;
 import edu.northeastern.cs5500.delivery.exception.BadRequestException;
-import edu.northeastern.cs5500.delivery.model.Cart;
-import edu.northeastern.cs5500.delivery.model.Meal;
-import edu.northeastern.cs5500.delivery.model.Order;
-import edu.northeastern.cs5500.delivery.model.User;
+import edu.northeastern.cs5500.delivery.model.*;
 import edu.northeastern.cs5500.delivery.repository.GenericRepository;
+
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -76,12 +75,18 @@ public class OrderController {
         return orders.add(newOrder);
     }
 
-    private Double calTotal(Cart cart) {
+    /**
+     * private class for calculating the total price of the meals in cart
+     * @param cart
+     * @return String Double format with two non-zero digits
+     */
+    private String calTotal(Cart cart) {
         Double total = 0.0;
-        for (Map.Entry<Meal, Integer> entry : cart.getMeals().entrySet()) {
-            total += entry.getKey().getMealPrice() * entry.getValue();
+        for (MealQuantity entry : cart.getMeals()) {
+            total += entry.getMeal().getMealPrice() * entry.getQuantity();
         }
-        return total;
+        DecimalFormat df = new DecimalFormat("#.##");
+        return df.format(total);
     }
 
     public Order cancelOneOrder(Order order) throws Exception {
