@@ -29,11 +29,13 @@ public class UserController {
         this.orderControllerProvider = orderControllerProvider;
         log.info("UserController > construct");
 
-        User user1 = new User();
-        user1.setName("Claire");
-        user1.setEmail("abcxyz@xyz.com");
-        user1.setAddress("Seattle, WA");
-        user1.setPassword("abc@@@");
+        User user1 = User.builder()
+                        .name("Claire")
+                        .email("abcxyz@xyz.com")
+                        .address("Seattle, WA")
+                        .password("abc@@@")
+                        .mealCart(new Cart())
+                        .build();
         try {
             addNewUser(user1);
         } catch (AlreadyExistsException | BadRequestException e) {
@@ -59,9 +61,10 @@ public class UserController {
     // Reminder: revise the quantity of same meals in UI
     public User addNewMealToCart(User user, Meal meal) {
         Cart userCart = user.getMealCart();
-        Optional<MealQuantity> existingMeal = userCart.getMeals().stream().filter(
-                mealQuantity -> mealQuantity.getMeal().equals(meal)
-        ).findAny();
+        Optional<MealQuantity> existingMeal =
+                userCart.getMeals().stream()
+                        .filter(mealQuantity -> mealQuantity.getMeal().equals(meal))
+                        .findAny();
 
         if (existingMeal.isPresent()) {
             existingMeal.get().setQuantity(existingMeal.get().getQuantity() + 1);
@@ -80,9 +83,10 @@ public class UserController {
     public User removeMealFromCart(@Nonnull User user, @Nonnull Meal meal) throws Exception {
         // 1. get the user and its cart
         Cart userCart = user.getMealCart();
-        Optional<MealQuantity> existingMeal = userCart.getMeals().stream().filter(
-                mealQuantity -> mealQuantity.getMeal().equals(meal)
-        ).findAny();
+        Optional<MealQuantity> existingMeal =
+                userCart.getMeals().stream()
+                        .filter(mealQuantity -> mealQuantity.getMeal().equals(meal))
+                        .findAny();
 
         if (existingMeal.isPresent()) {
             Integer newQuantity = existingMeal.get().getQuantity() - 1;

@@ -2,10 +2,12 @@ package edu.northeastern.cs5500.delivery.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
+import lombok.Builder;
 import lombok.Data;
 import org.bson.types.ObjectId;
 
 @Data
+@Builder
 public class User implements Model {
     ObjectId id;
     String name;

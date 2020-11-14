@@ -8,6 +8,7 @@ import edu.northeastern.cs5500.delivery.model.Order;
 import edu.northeastern.cs5500.delivery.repository.GenericRepository;
 import java.util.Collection;
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ public class CourierController {
     private final GenericRepository<Courier> couriers;
     private final Provider<OrderController> orderControllerProvider;
 
+    @Inject
     public CourierController(
             GenericRepository<Courier> couriers,
             Provider<OrderController> orderControllerProvider) {

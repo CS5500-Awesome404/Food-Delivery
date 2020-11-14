@@ -6,9 +6,16 @@ import static spark.Spark.halt;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.northeastern.cs5500.delivery.JsonTransformer;
 import edu.northeastern.cs5500.delivery.controller.UserController;
+import edu.northeastern.cs5500.delivery.exception.BadRequestException;
+import edu.northeastern.cs5500.delivery.model.Cart;
+import edu.northeastern.cs5500.delivery.model.Meal;
 import edu.northeastern.cs5500.delivery.model.User;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -34,13 +41,14 @@ public class UserView implements View {
                 (request, response) -> {
                     log.info("/user");
                     response.type("application/json");
-                    log.info(
-                            userController
-                                    .getUsers()
-                                    .iterator()
-                                    .next()
-                                    .getId()
-                                    .toString());
+                    List<String> userIds = userController
+                                            .getUsers()
+                                            .stream()
+                                            .map(User::getId)
+                                            .map(Object::toString)
+                                            .collect(Collectors.toList());
+
+                    log.info(userIds.toString());
                     return userController.getUsers();
                 },
                 jsonTransformer);
@@ -65,7 +73,15 @@ public class UserView implements View {
                 "/user",
                 (request, response) -> {
                     ObjectMapper mapper = new ObjectMapper();
-                    User user = mapper.readValue(request.body(), User.class);
+                    HashMap<String, String> map = mapper.readValue(request.body(), HashMap.class);
+                    User user = User.builder().id(new ObjectId(map.get(ViewUtils.ID)))
+                                            .name(map.get(ViewUtils.NAME))
+                                            .email(map.get(ViewUtils.EMAIL))
+                                            .address(map.get(ViewUtils.ADDRESS))
+                                            .password(map.get(ViewUtils.PASSWORD))
+                                            .mealCart(new Cart())
+                                            .build();
+                                            
                     if (!user.isValid()) {
                         response.status(400);
                         return "";
@@ -84,7 +100,17 @@ public class UserView implements View {
                 "/user",
                 (request, response) -> {
                     ObjectMapper mapper = new ObjectMapper();
-                    User user = mapper.readValue(request.body(), User.class);
+                    HashMap<String, String> map = mapper.readValue(request.body(), HashMap.class);
+                    User user = userController.getUser(new ObjectId(map.get(ViewUtils.ID)));
+                    if (user == null) {
+                        halt(404);
+                    }
+
+                    user.setName(map.get(ViewUtils.NAME));
+                    user.setEmail(map.get(ViewUtils.EMAIL));
+                    user.setAddress(map.get(ViewUtils.ADDRESS));
+                    user.setPassword(map.get(ViewUtils.PASSWORD));
+
                     if (!user.isValid()) {
                         response.status(400);
                         return "";
@@ -98,10 +124,43 @@ public class UserView implements View {
                 "/user",
                 (request, response) -> {
                     ObjectMapper mapper = new ObjectMapper();
-                    User user = mapper.readValue(request.body(), User.class);
-
-                    userController.deleteUser(user.getId());
-                    return user;
+                    HashMap<String, String> map = mapper.readValue(request.body(), HashMap.class);
+                    userController.deleteUser(new ObjectId(map.get(ViewUtils.ID)));
+                    return map;
                 });
+
+        put(
+            "/user/cart",
+            (request, response) -> {
+                ObjectMapper mapper = new ObjectMapper();
+                HashMap<String, String> map = mapper.readValue(request.body(), HashMap.class);
+                User user = userController.getUser(new ObjectId(map.get(ViewUtils.ID)));
+                if (user == null) {
+                    halt(404);
+                }
+                Meal meal = new Meal();
+                meal.setMealName(map.get(ViewUtils.MEAL_NAME));
+                meal.setMealPrice(Double.valueOf(map.get(ViewUtils.MEAL_PRICE)));
+
+                String operation = map.get(ViewUtils.OPERATION);
+                try {
+                    switch (operation) {
+                        case ViewUtils.ADD_OPERATION:
+                            
+                            return userController.addNewMealToCart(user, meal);
+                        case ViewUtils.REMOVE_OPERATION:
+                            
+                            return userController.removeMealFromCart(user, meal);
+                    
+                        default:
+                            response.status(400);
+                            return "";
+                    }
+                } catch (BadRequestException exception) {
+                    response.status(400);
+                    return "";
+                }
+
+            });
     }
 }

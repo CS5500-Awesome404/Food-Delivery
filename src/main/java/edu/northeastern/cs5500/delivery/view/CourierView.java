@@ -4,7 +4,6 @@ import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.halt;
 import static spark.Spark.post;
-import static spark.Spark.put;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.northeastern.cs5500.delivery.JsonTransformer;
@@ -35,13 +34,7 @@ public class CourierView implements View {
                 (request, response) -> {
                     log.info("/courier");
                     response.type("application/json");
-                    log.info(
-                        courierController
-                                    .getCouriers()
-                                    .iterator()
-                                    .next()
-                                    .getId()
-                                    .toString());
+                    log.info(courierController.getCouriers().iterator().next().getId().toString());
                     return courierController.getCouriers();
                 },
                 jsonTransformer);
@@ -67,7 +60,7 @@ public class CourierView implements View {
                 (request, response) -> {
                     ObjectMapper mapper = new ObjectMapper();
                     Courier courier = mapper.readValue(request.body(), Courier.class);
-                    if (!delivery.isValid()) {
+                    if (!courier.isValid()) {
                         response.status(400);
                         return "";
                     }
