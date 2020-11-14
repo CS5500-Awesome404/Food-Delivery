@@ -29,7 +29,8 @@ public class UserController {
         this.orderControllerProvider = orderControllerProvider;
         log.info("UserController > construct");
 
-        User user1 = User.builder()
+        User user1 =
+                User.builder()
                         .name("Claire")
                         .email("abcxyz@xyz.com")
                         .address("Seattle, WA")

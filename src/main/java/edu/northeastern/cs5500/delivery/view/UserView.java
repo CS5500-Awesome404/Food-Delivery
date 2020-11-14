@@ -6,10 +6,6 @@ import static spark.Spark.halt;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.northeastern.cs5500.delivery.JsonTransformer;
 import edu.northeastern.cs5500.delivery.controller.UserController;
@@ -17,6 +13,9 @@ import edu.northeastern.cs5500.delivery.exception.BadRequestException;
 import edu.northeastern.cs5500.delivery.model.Cart;
 import edu.northeastern.cs5500.delivery.model.Meal;
 import edu.northeastern.cs5500.delivery.model.User;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -41,12 +40,11 @@ public class UserView implements View {
                 (request, response) -> {
                     log.info("/user");
                     response.type("application/json");
-                    List<String> userIds = userController
-                                            .getUsers()
-                                            .stream()
-                                            .map(User::getId)
-                                            .map(Object::toString)
-                                            .collect(Collectors.toList());
+                    List<String> userIds =
+                            userController.getUsers().stream()
+                                    .map(User::getId)
+                                    .map(Object::toString)
+                                    .collect(Collectors.toList());
 
                     log.info(userIds.toString());
                     return userController.getUsers();
@@ -74,14 +72,16 @@ public class UserView implements View {
                 (request, response) -> {
                     ObjectMapper mapper = new ObjectMapper();
                     HashMap<String, String> map = mapper.readValue(request.body(), HashMap.class);
-                    User user = User.builder().id(new ObjectId(map.get(ViewUtils.ID)))
-                                            .name(map.get(ViewUtils.NAME))
-                                            .email(map.get(ViewUtils.EMAIL))
-                                            .address(map.get(ViewUtils.ADDRESS))
-                                            .password(map.get(ViewUtils.PASSWORD))
-                                            .mealCart(new Cart())
-                                            .build();
-                                            
+                    User user =
+                            User.builder()
+                                    .id(new ObjectId(map.get(ViewUtils.ID)))
+                                    .name(map.get(ViewUtils.NAME))
+                                    .email(map.get(ViewUtils.EMAIL))
+                                    .address(map.get(ViewUtils.ADDRESS))
+                                    .password(map.get(ViewUtils.PASSWORD))
+                                    .mealCart(new Cart())
+                                    .build();
+
                     if (!user.isValid()) {
                         response.status(400);
                         return "";
@@ -91,8 +91,7 @@ public class UserView implements View {
                     user.setId(null);
                     user = userController.addNewUser(user);
 
-                    response.redirect(
-                            String.format("/user/%s", user.getId().toHexString()), 301);
+                    response.redirect(String.format("/user/%s", user.getId().toHexString()), 301);
                     return user;
                 });
 
@@ -130,37 +129,34 @@ public class UserView implements View {
                 });
 
         put(
-            "/user/cart",
-            (request, response) -> {
-                ObjectMapper mapper = new ObjectMapper();
-                HashMap<String, String> map = mapper.readValue(request.body(), HashMap.class);
-                User user = userController.getUser(new ObjectId(map.get(ViewUtils.ID)));
-                if (user == null) {
-                    halt(404);
-                }
-                Meal meal = new Meal();
-                meal.setMealName(map.get(ViewUtils.MEAL_NAME));
-                meal.setMealPrice(Double.valueOf(map.get(ViewUtils.MEAL_PRICE)));
-
-                String operation = map.get(ViewUtils.OPERATION);
-                try {
-                    switch (operation) {
-                        case ViewUtils.ADD_OPERATION:
-                            
-                            return userController.addNewMealToCart(user, meal);
-                        case ViewUtils.REMOVE_OPERATION:
-                            
-                            return userController.removeMealFromCart(user, meal);
-                    
-                        default:
-                            response.status(400);
-                            return "";
+                "/user/cart",
+                (request, response) -> {
+                    ObjectMapper mapper = new ObjectMapper();
+                    HashMap<String, String> map = mapper.readValue(request.body(), HashMap.class);
+                    User user = userController.getUser(new ObjectId(map.get(ViewUtils.ID)));
+                    if (user == null) {
+                        halt(404);
                     }
-                } catch (BadRequestException exception) {
-                    response.status(400);
-                    return "";
-                }
+                    Meal meal = new Meal();
+                    meal.setMealName(map.get(ViewUtils.MEAL_NAME));
+                    meal.setMealPrice(Double.valueOf(map.get(ViewUtils.MEAL_PRICE)));
 
-            });
+                    String operation = map.get(ViewUtils.OPERATION);
+                    try {
+                        switch (operation) {
+                            case ViewUtils.ADD_OPERATION:
+                                return userController.addNewMealToCart(user, meal);
+                            case ViewUtils.REMOVE_OPERATION:
+                                return userController.removeMealFromCart(user, meal);
+
+                            default:
+                                response.status(400);
+                                return "";
+                        }
+                    } catch (BadRequestException exception) {
+                        response.status(400);
+                        return "";
+                    }
+                });
     }
 }

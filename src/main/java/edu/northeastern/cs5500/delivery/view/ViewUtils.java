@@ -17,4 +17,9 @@ public final class ViewUtils {
     protected static final String OPERATION = "operation";
     protected static final String MEAL_NAME = "mealName";
     protected static final String MEAL_PRICE = "mealPrice";
+    protected static final String STATUS = "status";
+    protected static final String PICK_UP = "PICKUP";
+    protected static final String DELIVER = "DELIVER";
+    protected static final String COURIER_ID = "courierId";
+    protected static final String ORDER_ID = "orderId";
 }

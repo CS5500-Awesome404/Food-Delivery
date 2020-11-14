@@ -66,9 +66,8 @@ public class CourierController {
             throw new NotExistsException();
         }
 
-        // check order status
-        OrderController orderController = orderControllerProvider.get();
-        if (!order.getStatus().equals("READY")) {
+        log.info(order.toString());
+        if (!order.getStatus().equals(Order.Status.READY)) {
             throw new BadRequestException();
         }
         order.setCourierId(courierId);
@@ -83,7 +82,7 @@ public class CourierController {
 
         // check order status
         OrderController orderController = orderControllerProvider.get();
-        if (!order.getStatus().equals("DELIVERING")) {
+        if (!order.getStatus().equals(Order.Status.DELIVERING)) {
             throw new BadRequestException();
         }
         order.setStatus(Order.Status.DELIVERED);

@@ -69,7 +69,7 @@ public class OrderView implements View {
                         halt(404);
                     }
 
-                    // place order 
+                    // place order
                     return userController.convertCartToOrder(user);
                 },
                 jsonTransformer);
@@ -93,10 +93,24 @@ public class OrderView implements View {
                 "/order",
                 (request, response) -> {
                     ObjectMapper mapper = new ObjectMapper();
-                    Order order = mapper.readValue(request.body(), Order.class);
+                    HashMap<String, String> map = mapper.readValue(request.body(), HashMap.class);
+                    orderController.deleteOrder(new ObjectId(map.get(ViewUtils.ID)));
+                    return map;
+                },
+                jsonTransformer);
 
-                    orderController.deleteOrder(order.getId());
-                    return order;
+        put(
+                "/order/status",
+                (request, response) -> {
+                    ObjectMapper mapper = new ObjectMapper();
+                    HashMap<String, String> map = mapper.readValue(request.body(), HashMap.class);
+                    Order order = orderController.getOrder(new ObjectId(map.get(ViewUtils.ID)));
+                    if (order == null) {
+                        halt(404);
+                    }
+                    String status = map.get(ViewUtils.STATUS);
+                    Order.Status newStatus = Order.Status.valueOf(status);
+                    return orderController.updateStatus(order, newStatus);
                 },
                 jsonTransformer);
     }
