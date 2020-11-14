@@ -43,22 +43,6 @@ paths:
                   type: string
               required:
                 - userId
-    put:
-      summary: UpdateOrder
-      operationId: put-order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/order'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/order'
-      description: Update an order.
     delete:
       summary: DeleteOrder
       operationId: delete-order
@@ -68,13 +52,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/order'
+                type: object
+                properties:
+                  id:
+                    type: string
       description: delete an order
       requestBody:
         content:
           application/json:
             schema:
-              type: string
+              type: object
+              properties:
+                id:
+                  type: string
   '/order/{orderId}':
     parameters:
       - schema:
@@ -88,16 +78,26 @@ paths:
       responses:
         '200':
           description: OK
-  '/order/status/{orderId}':
-    parameters:
-      - schema:
-          type: string
-        name: orderId
-        in: path
-        required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order'
+      description: Get order by providing order id.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+              required:
+                - id
+  /order/status:
+    parameters: []
     put:
       summary: UpdateOrderStatus
-      operationId: put-order-status-orderId
+      operationId: put-order-status
       responses:
         '200':
           description: OK
@@ -105,21 +105,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/order'
+      description: Update the status of an order
       requestBody:
         content:
           application/json:
             schema:
-              type: string
-              enum:
-                - CREATED
-                - PREPARING
-                - READY
-                - DELIVERING
-                - DELIVERED
-                - CONFIRMED
-                - CANCELLED
-              example: CREATED
-      description: Update the status of an order.
+              type: object
+              properties:
+                id:
+                  type: string
+                status:
+                  type: string
+                  enum:
+                    - CREATED
+                    - PREPARING
+                    - READY
+                    - DELIVERING
+                    - DELIVERED
+                    - CONFIRMED
+                    - CANCELLED
+              required:
+                - id
+                - status
 components:
   schemas:
     order:

@@ -22,12 +22,6 @@ paths:
       operationId: get-courier
       parameters: []
       description: Get a collection of couriers.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties: {}
     post:
       summary: AddCourier
       operationId: post-courier
@@ -39,11 +33,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/courier'
       description: Add a courier
-      parameters:
-        - schema: {}
-          in: query
-          name: courier
-          required: true
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/courier'
     delete:
       summary: DeleteCourier
       operationId: delete-courier
@@ -53,13 +48,52 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/courier'
+                type: object
+                properties:
+                  id:
+                    type: string
       description: Delete a courier
-      parameters:
-        - schema: {}
-          in: query
-          name: courierId
-          required: true
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+              required:
+                - id
+    put:
+      summary: UpdateCourier
+      operationId: put-courier
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./Order-API.v1.yaml#/components/schemas/order
+      description: Can be used for pickup the order or deliver the order.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                operation:
+                  type: string
+                  enum:
+                    - PICKUP
+                    - DELIVER
+                courierId:
+                  type: string
+                orderId:
+                  type: string
+              required:
+                - operation
+                - courierId
+                - orderId
   '/courier/{courierId}':
     parameters:
       - schema:
@@ -78,26 +112,26 @@ paths:
               schema:
                 $ref: '#/components/schemas/courier'
       operationId: get-courier-courierId
-      description: Get a courier
-      parameters:
-        - schema: {}
-          in: query
-          name: courierId
-          description: ''
-          required: true
+      description: Get a courier by providing id
+      parameters: []
 components:
   schemas:
     courier:
       title: courier
       type: object
+      description: ''
       properties:
-        courierId:
-          type: object
+        id:
+          type: string
+          default: 5faf8a3ba144480a3fd42aac
         courierName:
           type: string
         location:
           type: string
-      description: ''
+      required:
+        - id
+        - courierName
+        - location
   securitySchemes:
     API Key:
       name: apikey
