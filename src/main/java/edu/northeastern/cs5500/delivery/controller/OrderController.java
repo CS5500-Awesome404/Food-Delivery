@@ -4,10 +4,8 @@ import edu.northeastern.cs5500.delivery.exception.AlreadyExistsException;
 import edu.northeastern.cs5500.delivery.exception.BadRequestException;
 import edu.northeastern.cs5500.delivery.model.*;
 import edu.northeastern.cs5500.delivery.repository.GenericRepository;
-
 import java.text.DecimalFormat;
 import java.util.Collection;
-import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -77,6 +75,7 @@ public class OrderController {
 
     /**
      * private class for calculating the total price of the meals in cart
+     *
      * @param cart
      * @return String Double format with two non-zero digits
      */
@@ -142,5 +141,10 @@ public class OrderController {
 
         order.setStatus(newStatus);
         return orders.update(order);
+    }
+
+    public void updateOrder(@Nonnull Order order) throws Exception {
+        log.debug("OrderController > updateOrder(...)");
+        orders.update(order);
     }
 }

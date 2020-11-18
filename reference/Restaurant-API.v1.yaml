@@ -1,0 +1,135 @@
+openapi: 3.0.0
+info:
+  title: Restaurant API
+  version: '1.0'
+  description: 'Add a restaurant, get a restaurant, delete a restaurant, update a restaurant, make food.'
+servers:
+  - url: 'http://localhost:5000'
+    description: ''
+paths:
+  /restaurant:
+    get:
+      summary: GetAllRestaurants
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/restaurant'
+      operationId: get-restaurant
+      description: Get all restaurants in collections.
+      parameters: []
+    post:
+      summary: AddRestaurant
+      operationId: post-restaurant
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/restaurant'
+      description: 'Create a new restaurant. '
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/restaurant'
+            examples:
+              example-1:
+                value:
+                  id: 5fae04aaa40ba56ebddddf8a
+                  menu:
+                    - mealName: hamburger
+                      mealPrice: 0
+                  name: hamburger wang
+        description: ''
+    put:
+      summary: UpdateRestaurant
+      operationId: put-restaurant
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/restaurant'
+      description: 'Update restaurant name, restaurant menu or both.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/restaurant'
+    delete:
+      summary: DeleteRestaurant
+      operationId: delete-restaurant
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  restaurantId:
+                    type: string
+      description: Delete a restaurant by providing the restaurantId.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                restaurantId:
+                  type: string
+  '/restaurant/{:id}':
+    parameters:
+      - schema:
+          type: string
+        name: ':id'
+        in: path
+        required: true
+    get:
+      summary: GetRestaurantById
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/restaurant'
+      operationId: get-restaurant-restaurantId
+      description: Get a restaurant from the collection by Id
+      parameters: []
+components:
+  schemas:
+    restaurant:
+      title: restaurant
+      type: object
+      properties:
+        id:
+          type: string
+          default: 5fae04aaa40ba56ebddddf8a
+        menu:
+          $ref: '#/components/schemas/menu'
+        name:
+          type: string
+      required:
+        - id
+        - menu
+        - name
+    menu:
+      title: menu
+      type: array
+      items:
+        $ref: ./Order-API.v1.yaml#/components/schemas/meal
+  securitySchemes:
+    'API Key ':
+      name: apikey
+      type: apiKey
+      in: query

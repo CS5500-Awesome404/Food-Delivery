@@ -8,6 +8,7 @@ import edu.northeastern.cs5500.delivery.model.Order;
 import edu.northeastern.cs5500.delivery.repository.GenericRepository;
 import java.util.Collection;
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ public class CourierController {
     private final GenericRepository<Courier> couriers;
     private final Provider<OrderController> orderControllerProvider;
 
+    @Inject
     public CourierController(
             GenericRepository<Courier> couriers,
             Provider<OrderController> orderControllerProvider) {
@@ -64,9 +66,8 @@ public class CourierController {
             throw new NotExistsException();
         }
 
-        // check order status
-        OrderController orderController = orderControllerProvider.get();
-        if (!order.getStatus().equals("READY")) {
+        log.info(order.toString());
+        if (!order.getStatus().equals(Order.Status.READY)) {
             throw new BadRequestException();
         }
         order.setCourierId(courierId);
@@ -81,7 +82,7 @@ public class CourierController {
 
         // check order status
         OrderController orderController = orderControllerProvider.get();
-        if (!order.getStatus().equals("DELIVERING")) {
+        if (!order.getStatus().equals(Order.Status.DELIVERING)) {
             throw new BadRequestException();
         }
         order.setStatus(Order.Status.DELIVERED);

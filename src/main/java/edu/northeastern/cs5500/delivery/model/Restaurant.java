@@ -7,10 +7,10 @@ import org.bson.types.ObjectId;
 
 @Data
 public class Restaurant implements Model {
-    ObjectId id;
+    private ObjectId id;
     // Ids of all meals provided by this restaurant.
-    List<Meal> menu;
-    String name;
+    private List<Meal> menu;
+    private String name;
 
     /** @return true if this order is valid */
     @JsonIgnore

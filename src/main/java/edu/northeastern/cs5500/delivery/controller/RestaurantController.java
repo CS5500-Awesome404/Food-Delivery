@@ -2,16 +2,14 @@ package edu.northeastern.cs5500.delivery.controller;
 
 import edu.northeastern.cs5500.delivery.exception.AlreadyExistsException;
 import edu.northeastern.cs5500.delivery.exception.BadRequestException;
-import edu.northeastern.cs5500.delivery.exception.NotExistsException;
-import edu.northeastern.cs5500.delivery.model.Meal;
 import edu.northeastern.cs5500.delivery.model.Order;
 import edu.northeastern.cs5500.delivery.model.Restaurant;
 import edu.northeastern.cs5500.delivery.repository.GenericRepository;
 import java.util.Collection;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -24,11 +22,28 @@ public class RestaurantController {
     private final GenericRepository<Restaurant> restaurants;
     private final Provider<OrderController> orderControllerProvider;
 
+    @Inject
     public RestaurantController(
             GenericRepository<Restaurant> restaurants,
             Provider<OrderController> orderControllerProvider) {
         this.restaurants = restaurants;
         this.orderControllerProvider = orderControllerProvider;
+
+        log.info("RestaurantController > construct > adding default restaurants");
+
+        final Restaurant defaultRestaurant1 = new Restaurant();
+        defaultRestaurant1.setName("KFC");
+
+        final Restaurant defaultRestaurant2 = new Restaurant();
+        defaultRestaurant2.setName("PF Chang's");
+
+        try {
+            addRestaurant(defaultRestaurant1);
+            addRestaurant(defaultRestaurant2);
+        } catch (Exception e) {
+            log.error("RestaurantController > construct > adding default restaurants > failure?");
+            e.printStackTrace();
+        }
     }
 
     @Nonnull
@@ -64,32 +79,9 @@ public class RestaurantController {
         restaurants.delete(id);
     }
 
-    public void updateRestaurantAddMeal(Restaurant restaurant, Meal meal)
-            throws AlreadyExistsException {
+    public void updateRestaurant(Restaurant restaurant) throws Exception {
 
-        List<Meal> newMenu = restaurant.getMenu();
-        // check of duplication.
-        if (restaurant.getMenu().contains(meal)) {
-            throw new AlreadyExistsException();
-        }
-        newMenu.add(meal);
-        restaurant.setMenu(newMenu);
-        restaurants.update(restaurant);
-    }
-
-    public void updateRestaurantRemoveMeal(Restaurant restaurant, Meal meal) throws Exception {
-        List<Meal> newMenu = restaurant.getMenu();
-        // check that mealId exists.
-        if (!restaurant.getMenu().contains(meal)) {
-            throw new NotExistsException();
-        }
-        newMenu.remove(meal);
-        restaurant.setMenu(newMenu);
-        restaurants.update(restaurant);
-    }
-
-    public void updateRestaurantName(Restaurant restaurant, String newRestaurantName) {
-        restaurant.setName(newRestaurantName);
+        log.debug("RestaurantController > updateRestaurant(...)");
         restaurants.update(restaurant);
     }
 
