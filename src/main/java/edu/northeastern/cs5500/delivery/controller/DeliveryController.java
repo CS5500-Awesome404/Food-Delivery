@@ -33,7 +33,6 @@ public class DeliveryController {
         final Delivery defaultDelivery2 = new Delivery();
         defaultDelivery2.setTitle("A steak");
         defaultDelivery2.setDescription("Not a hot dog");
-
         try {
             addDelivery(defaultDelivery1);
             addDelivery(defaultDelivery2);
@@ -45,7 +44,7 @@ public class DeliveryController {
 
     @Nullable
     public Delivery getDelivery(@Nonnull ObjectId uuid) {
-        log.debug("DeliveryController > getDelivery({})", uuid);
+        log.info("DeliveryController > getDelivery({})", uuid);
         return deliveries.get(uuid);
     }
 

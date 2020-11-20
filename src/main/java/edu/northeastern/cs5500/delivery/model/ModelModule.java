@@ -11,7 +11,7 @@ public class ModelModule {
     }
 
     @Provides
-    public Class<User> provideMenuClass() {
+    public Class<User> provideUserClass() {
         return User.class;
     }
 

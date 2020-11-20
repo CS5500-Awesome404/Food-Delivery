@@ -1,0 +1,141 @@
+openapi: 3.0.0
+info:
+  title: Courier API
+  version: '1.0'
+  description: 'Add a courier, get a courier, get the collection of couriers, delete a courier'
+servers:
+  - url: 'http://localhost:5000'
+paths:
+  /courier:
+    get:
+      summary: GetCouriers
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/courier'
+      operationId: get-courier
+      parameters: []
+      description: Get a collection of couriers.
+    post:
+      summary: AddCourier
+      operationId: post-courier
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/courier'
+      description: Add a courier
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/courier'
+    delete:
+      summary: DeleteCourier
+      operationId: delete-courier
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+      description: Delete a courier
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+              required:
+                - id
+    put:
+      summary: UpdateCourier
+      operationId: put-courier
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./Order-API.v1.yaml#/components/schemas/order
+      description: Can be used for pickup the order or deliver the order.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                operation:
+                  type: string
+                  enum:
+                    - PICKUP
+                    - DELIVER
+                courierId:
+                  type: string
+                orderId:
+                  type: string
+              required:
+                - operation
+                - courierId
+                - orderId
+  '/courier/{courierId}':
+    parameters:
+      - schema:
+          type: string
+        name: courierId
+        in: path
+        required: true
+    get:
+      summary: GetCouriers
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/courier'
+      operationId: get-courier-courierId
+      description: Get a courier by providing id
+      parameters: []
+components:
+  schemas:
+    courier:
+      title: courier
+      type: object
+      description: ''
+      properties:
+        id:
+          type: string
+          default: 5faf8a3ba144480a3fd42aac
+        courierName:
+          type: string
+        location:
+          type: string
+      required:
+        - id
+        - courierName
+        - location
+  securitySchemes:
+    API Key:
+      name: apikey
+      type: apiKey
+      in: query
+security:
+  - API Key: []

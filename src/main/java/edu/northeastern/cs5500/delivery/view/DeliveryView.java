@@ -33,8 +33,15 @@ public class DeliveryView implements View {
         get(
                 "/delivery",
                 (request, response) -> {
-                    log.debug("/delivery");
+                    log.info("/delivery");
                     response.type("application/json");
+                    log.info(
+                            deliveryController
+                                    .getDeliveries()
+                                    .iterator()
+                                    .next()
+                                    .getId()
+                                    .toString());
                     return deliveryController.getDeliveries();
                 },
                 jsonTransformer);
@@ -43,8 +50,9 @@ public class DeliveryView implements View {
                 "/delivery/:id",
                 (request, response) -> {
                     final String paramId = request.params(":id");
-                    log.debug("/delivery/:id<{}>", paramId);
+                    log.info("/delivery/:id<{}>", paramId);
                     final ObjectId id = new ObjectId(paramId);
+                    log.info(id.toString());
                     Delivery delivery = deliveryController.getDelivery(id);
                     if (delivery == null) {
                         halt(404);
@@ -69,7 +77,7 @@ public class DeliveryView implements View {
                     delivery = deliveryController.addDelivery(delivery);
 
                     response.redirect(
-                            String.format("/delivery/{}", delivery.getId().toHexString()), 301);
+                            String.format("/delivery/%s", delivery.getId().toHexString()), 301);
                     return delivery;
                 });
 

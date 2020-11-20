@@ -1,0 +1,180 @@
+openapi: 3.0.0
+info:
+  title: Order API
+  version: '1.0'
+  description: 'Add new order, get an order, get a collection of orders, delete an order, update order status.'
+servers:
+  - url: 'http://localhost:5000'
+paths:
+  /order:
+    get:
+      summary: GetAllOrders
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/order'
+      operationId: get-order
+      description: Get all the orders in the collection.
+      parameters: []
+    post:
+      summary: PlaceOrder
+      operationId: post-order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order'
+      description: Place order based on the user cart.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+              required:
+                - userId
+    delete:
+      summary: DeleteOrder
+      operationId: delete-order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+      description: delete an order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+  '/order/{orderId}':
+    parameters:
+      - schema:
+          type: string
+        name: orderId
+        in: path
+        required: true
+    get:
+      summary: GetOrderById
+      operationId: get-order-orderId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order'
+      description: Get order by providing order id.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+              required:
+                - id
+  /order/status:
+    parameters: []
+    put:
+      summary: UpdateOrderStatus
+      operationId: put-order-status
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order'
+      description: Update the status of an order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                status:
+                  type: string
+                  enum:
+                    - CREATED
+                    - PREPARING
+                    - READY
+                    - DELIVERING
+                    - DELIVERED
+                    - CONFIRMED
+                    - CANCELLED
+              required:
+                - id
+                - status
+components:
+  schemas:
+    order:
+      title: Order
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        orderContent:
+          type: array
+          items:
+            $ref: '#/components/schemas/mealQuantity'
+        courierId:
+          type: string
+        total:
+          type: string
+      required:
+        - orderContent
+        - courierId
+        - total
+    meal:
+      title: meal
+      type: object
+      properties:
+        mealName:
+          type: string
+        mealPrice:
+          type: number
+      required:
+        - mealName
+        - mealPrice
+    mealQuantity:
+      title: mealQuantity
+      type: object
+      properties:
+        meal:
+          $ref: '#/components/schemas/meal'
+        quantity:
+          type: integer
+      required:
+        - meal
+        - quantity
+  securitySchemes:
+    API Key:
+      name: apikey
+      type: apiKey
+      in: query
+security:
+  - API Key - 1: []
