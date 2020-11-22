@@ -6,11 +6,6 @@ import dagger.multibindings.IntoSet;
 
 @Module
 public class ViewModule {
-    @Provides
-    @IntoSet
-    public View provideDeliveryView(DeliveryView deliveryView) {
-        return deliveryView;
-    }
 
     @Provides
     @IntoSet
