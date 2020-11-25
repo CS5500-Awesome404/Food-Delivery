@@ -5,10 +5,6 @@ import dagger.Provides;
 
 @Module
 public class ModelModule {
-    @Provides
-    public Class<Delivery> provideDeliveryClass() {
-        return Delivery.class;
-    }
 
     @Provides
     public Class<User> provideUserClass() {
