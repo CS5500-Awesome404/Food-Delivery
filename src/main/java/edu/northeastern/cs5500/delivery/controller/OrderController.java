@@ -106,8 +106,7 @@ public class OrderController {
 
         switch (order.getStatus()) {
             case CREATED:
-                if (!(newStatus.equals(Order.Status.PREPARING)
-                        || newStatus.equals(Order.Status.CANCELLED))) {
+                if (newStatus.equals(Order.Status.CANCELLED)) {
                     throw new BadRequestException();
                 }
                 break;
