@@ -2,12 +2,12 @@ package edu.northeastern.cs5500.delivery.controller;
 
 import edu.northeastern.cs5500.delivery.exception.AlreadyExistsException;
 import edu.northeastern.cs5500.delivery.exception.BadRequestException;
+import edu.northeastern.cs5500.delivery.model.Meal;
 import edu.northeastern.cs5500.delivery.model.Order;
 import edu.northeastern.cs5500.delivery.model.Restaurant;
 import edu.northeastern.cs5500.delivery.repository.GenericRepository;
-import java.util.Collection;
-import java.util.Timer;
-import java.util.TimerTask;
+
+import java.util.*;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -31,19 +31,46 @@ public class RestaurantController {
 
         log.info("RestaurantController > construct > adding default restaurants");
 
-        final Restaurant defaultRestaurant1 = new Restaurant();
-        defaultRestaurant1.setName("KFC");
+        buildDefaultRestaurants();
+    }
 
-        final Restaurant defaultRestaurant2 = new Restaurant();
-        defaultRestaurant2.setName("PF Chang's");
-
+    private void buildDefaultRestaurants() {
         try {
-            addRestaurant(defaultRestaurant1);
-            addRestaurant(defaultRestaurant2);
+            addRestaurant(Restaurant.builder()
+                    .id(ObjectId.get())
+                    .name("HappyLemo")
+                    .menu(buildDefaultMeals())
+                    .build()
+            );
+            addRestaurant(Restaurant.builder()
+                    .id(ObjectId.get())
+                    .name("KFC")
+                    .menu(buildDefaultMeals())
+                    .build()
+            );
+            addRestaurant(Restaurant.builder()
+                    .id(ObjectId.get())
+                    .name("PandaExpress")
+                    .menu(buildDefaultMeals())
+                    .build()
+            );
         } catch (Exception e) {
             log.error("RestaurantController > construct > adding default restaurants > failure?");
             e.printStackTrace();
         }
+    }
+
+    private  List<Meal> buildDefaultMeals() {
+        Random random = new Random();
+        int countUpperBound = 5;
+        int count = random.nextInt(countUpperBound) + 1;
+        List<Meal> meals = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            double price =  Math.floor(random.nextInt(countUpperBound * 2) + random.nextDouble() * 100) / 100;
+            meals.add(Meal.builder().mealId(ObjectId.get()).mealName("cupcake").mealPrice(price).build());
+        }
+
+        return meals;
     }
 
     @Nonnull

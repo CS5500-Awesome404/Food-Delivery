@@ -8,13 +8,15 @@ import org.bson.types.ObjectId;
 public class Courier implements Model {
     private ObjectId id;
 
-    private String courierName;
+    private String name;
     private String location;
 
-    /** @return true if this delivery is valid */
+    /**
+     * @return true if this delivery is valid
+     */
     @JsonIgnore
     public boolean isValid() {
 
-        return courierName != null && !courierName.isEmpty();
+        return name != null && !name.isEmpty();
     }
 }
