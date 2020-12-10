@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="10bc5f92-38c9-4675-828d-d42546df109c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../.idea/fd.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/java/edu/northeastern/cs5500/delivery/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/edu/northeastern/cs5500/delivery/controller/OrderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/java/edu/northeastern/cs5500/delivery/controller/RestaurantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/edu/northeastern/cs5500/delivery/controller/RestaurantController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/java/edu/northeastern/cs5500/delivery/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/edu/northeastern/cs5500/delivery/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/java/edu/northeastern/cs5500/delivery/model/Courier.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/edu/northeastern/cs5500/delivery/model/Courier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/java/edu/northeastern/cs5500/delivery/model/Meal.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/edu/northeastern/cs5500/delivery/model/Meal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/java/edu/northeastern/cs5500/delivery/model/Restaurant.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/edu/northeastern/cs5500/delivery/model/Restaurant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/java/edu/northeastern/cs5500/delivery/view/OrderView.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/edu/northeastern/cs5500/delivery/view/OrderView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/java/edu/northeastern/cs5500/delivery/view/UserView.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/edu/northeastern/cs5500/delivery/view/UserView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/java/edu/northeastern/cs5500/delivery/view/ViewUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/edu/northeastern/cs5500/delivery/view/ViewUtils.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1lTvR6K1EkxOQxPCpl6NylGOOF4" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="nodejs_package_manager_path" value="npm" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="10bc5f92-38c9-4675-828d-d42546df109c" name="Default Changelist" comment="" />
+      <created>1607633885055</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1607633885055</updated>
+      <workItem from="1607633886312" duration="48000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

@@ -109,7 +109,7 @@ public class OrderView implements View {
                         halt(404);
                     }
                     String status = map.get(ViewUtils.STATUS);
-                    Order.Status newStatus = Order.Status.valueOf(status);
+                    Order.Status newStatus = Order.Status.valueOf(status.toUpperCase());
                     return orderController.updateStatus(order, newStatus);
                 },
                 jsonTransformer);

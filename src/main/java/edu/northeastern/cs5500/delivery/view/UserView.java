@@ -74,7 +74,7 @@ public class UserView implements View {
                     HashMap<String, String> map = mapper.readValue(request.body(), HashMap.class);
                     User user =
                             User.builder()
-                                    .id(new ObjectId(map.get(ViewUtils.ID)))
+                                    .id(ObjectId.get())
                                     .name(map.get(ViewUtils.NAME))
                                     .email(map.get(ViewUtils.EMAIL))
                                     .address(map.get(ViewUtils.ADDRESS))
@@ -135,9 +135,10 @@ public class UserView implements View {
                     HashMap<String, String> map = mapper.readValue(request.body(), HashMap.class);
                     User user = userController.getUser(new ObjectId(map.get(ViewUtils.ID)));
                     if (user == null) {
-                        halt(404);
+                        halt(400);
                     }
                     Meal meal = new Meal();
+                    meal.setMealId(new ObjectId(map.get(ViewUtils.MEAL_Id)));
                     meal.setMealName(map.get(ViewUtils.MEAL_NAME));
                     meal.setMealPrice(Double.valueOf(map.get(ViewUtils.MEAL_PRICE)));
 
