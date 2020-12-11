@@ -62,7 +62,7 @@ public class RestaurantController {
 
     private  List<Meal> buildDefaultMeals() {
         Random random = new Random();
-        int countUpperBound = 10;
+        int countUpperBound = 20;
         int count = random.nextInt(countUpperBound) + 1;
         List<Meal> meals = new ArrayList<>();
         for (int i = 0; i < count; i++) {

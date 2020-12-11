@@ -89,7 +89,7 @@ public class UserController {
         Cart userCart = user.getMealCart();
         Optional<MealQuantity> existingMeal =
                 userCart.getMeals().stream()
-                        .filter(mealQuantity -> mealQuantity.getMeal().equals(meal))
+                        .filter(mealQuantity -> mealQuantity.getMeal().getMealId().equals(meal.getMealId()))
                         .findAny();
 
         if (existingMeal.isPresent()) {
