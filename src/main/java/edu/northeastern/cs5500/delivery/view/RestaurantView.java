@@ -57,7 +57,13 @@ public class RestaurantView implements View {
                 "/restaurant",
                 (request, response) -> {
                     ObjectMapper mapper = new ObjectMapper();
-                    Restaurant restaurant = mapper.readValue(request.body(), Restaurant.class);
+                    HashMap<String, String> map = mapper.readValue(request.body(), HashMap.class);
+                    //Restaurant restaurant = mapper.readValue(request.body(), Restaurant.class);
+                    Restaurant restaurant =
+                            Restaurant.builder()
+                            .id(ObjectId.get())
+                            .name(map.get(ViewUtils.NAME))
+                            .build();
                     if (!restaurant.isValid()) {
                         response.status(400);
                         return "";
