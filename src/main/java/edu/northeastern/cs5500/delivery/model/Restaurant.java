@@ -14,11 +14,13 @@ public class Restaurant implements Model {
     // Ids of all meals provided by this restaurant.
     private List<Meal> menu;
     private String name;
+    private String phone;
+    private String address;
 
     /** @return true if this order is valid */
     @JsonIgnore
     public boolean isValid() {
 
-        return name != null && !name.isEmpty();
+        return name != null && !name.isEmpty() && phone != null && !phone.isEmpty() && address != null && !address.isEmpty();
     }
 }

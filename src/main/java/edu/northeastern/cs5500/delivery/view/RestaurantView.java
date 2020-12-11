@@ -63,6 +63,8 @@ public class RestaurantView implements View {
                             Restaurant.builder()
                             .id(ObjectId.get())
                             .name(map.get(ViewUtils.NAME))
+                            .phone(map.get(ViewUtils.PHONE))
+                            .address(map.get(ViewUtils.ADDRESS))
                             .build();
                     if (!restaurant.isValid()) {
                         response.status(400);

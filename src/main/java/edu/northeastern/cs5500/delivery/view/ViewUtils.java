@@ -10,6 +10,7 @@ public final class ViewUtils {
     protected static final String ID = "id";
     protected static final String NAME = "name";
     protected static final String EMAIL = "email";
+    protected static final String PHONE = "phone";
     protected static final String ADDRESS = "address";
     protected static final String PASSWORD = "password";
     protected static final String ADD_OPERATION = "ADD";
