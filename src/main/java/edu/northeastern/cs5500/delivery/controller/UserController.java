@@ -4,6 +4,7 @@ import edu.northeastern.cs5500.delivery.exception.AlreadyExistsException;
 import edu.northeastern.cs5500.delivery.exception.BadRequestException;
 import edu.northeastern.cs5500.delivery.model.*;
 import edu.northeastern.cs5500.delivery.repository.GenericRepository;
+
 import java.util.Collection;
 import java.util.Optional;
 import javax.annotation.Nonnull;
@@ -11,6 +12,7 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 
@@ -31,6 +33,7 @@ public class UserController {
 
         User user1 =
                 User.builder()
+                        .id(new ObjectId("5fcef7aa948d565fdd71a26c"))
                         .name("Claire")
                         .email("abcxyz@xyz.com")
                         .address("Seattle, WA")
@@ -86,7 +89,7 @@ public class UserController {
         Cart userCart = user.getMealCart();
         Optional<MealQuantity> existingMeal =
                 userCart.getMeals().stream()
-                        .filter(mealQuantity -> mealQuantity.getMeal().equals(meal))
+                        .filter(mealQuantity -> mealQuantity.getMeal().getMealId().equals(meal.getMealId()))
                         .findAny();
 
         if (existingMeal.isPresent()) {
