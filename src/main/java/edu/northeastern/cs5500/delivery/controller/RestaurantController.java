@@ -6,7 +6,6 @@ import edu.northeastern.cs5500.delivery.model.Meal;
 import edu.northeastern.cs5500.delivery.model.Order;
 import edu.northeastern.cs5500.delivery.model.Restaurant;
 import edu.northeastern.cs5500.delivery.repository.GenericRepository;
-
 import java.util.*;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -36,44 +35,51 @@ public class RestaurantController {
 
     private void buildDefaultRestaurants() {
         try {
-            addRestaurant(Restaurant.builder()
-                    .id(ObjectId.get())
-                    .name("HappyLemo")
-                    .phone("6606006606")
-                    .address("Face to the sea")
-                    .menu(buildDefaultMeals())
-                    .build()
-            );
-            addRestaurant(Restaurant.builder()
-                    .id(ObjectId.get())
-                    .name("KFC")
-                    .phone("8808008808")
-                    .address("Face to the mountain")
-                    .menu(buildDefaultMeals())
-                    .build()
-            );
-            addRestaurant(Restaurant.builder()
-                    .id(ObjectId.get())
-                    .name("PandaExpress")
-                    .phone("1101001101")
-                    .address("I am priceless")
-                    .menu(buildDefaultMeals())
-                    .build()
-            );
+            addRestaurant(
+                    Restaurant.builder()
+                            .id(ObjectId.get())
+                            .name("HappyLemo")
+                            .phone("6606006606")
+                            .address("Face to the sea")
+                            .menu(buildDefaultMeals())
+                            .build());
+            addRestaurant(
+                    Restaurant.builder()
+                            .id(ObjectId.get())
+                            .name("KFC")
+                            .phone("8808008808")
+                            .address("Face to the mountain")
+                            .menu(buildDefaultMeals())
+                            .build());
+            addRestaurant(
+                    Restaurant.builder()
+                            .id(ObjectId.get())
+                            .name("PandaExpress")
+                            .phone("1101001101")
+                            .address("I am priceless")
+                            .menu(buildDefaultMeals())
+                            .build());
         } catch (Exception e) {
             log.error("RestaurantController > construct > adding default restaurants > failure?");
             e.printStackTrace();
         }
     }
 
-    private  List<Meal> buildDefaultMeals() {
+    private List<Meal> buildDefaultMeals() {
         Random random = new Random();
         int countUpperBound = 20;
         int count = random.nextInt(countUpperBound) + 1;
         List<Meal> meals = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            double price =  Math.floor(random.nextInt(countUpperBound * 2) + random.nextDouble() * 100) / 100;
-            meals.add(Meal.builder().mealId(ObjectId.get()).mealName("cupcake").mealPrice(price).build());
+            double price =
+                    Math.floor(random.nextInt(countUpperBound * 2) + random.nextDouble() * 100)
+                            / 100;
+            meals.add(
+                    Meal.builder()
+                            .mealId(ObjectId.get())
+                            .mealName("cupcake")
+                            .mealPrice(price)
+                            .build());
         }
 
         return meals;

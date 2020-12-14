@@ -2,7 +2,6 @@ package edu.northeastern.cs5500.delivery.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
-
 import lombok.Builder;
 import lombok.Data;
 import org.bson.types.ObjectId;
@@ -21,6 +20,11 @@ public class Restaurant implements Model {
     @JsonIgnore
     public boolean isValid() {
 
-        return name != null && !name.isEmpty() && phone != null && !phone.isEmpty() && address != null && !address.isEmpty();
+        return name != null
+                && !name.isEmpty()
+                && phone != null
+                && !phone.isEmpty()
+                && address != null
+                && !address.isEmpty();
     }
 }

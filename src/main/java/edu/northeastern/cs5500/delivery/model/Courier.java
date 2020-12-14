@@ -11,9 +11,7 @@ public class Courier implements Model {
     private String name;
     private String location;
 
-    /**
-     * @return true if this delivery is valid
-     */
+    /** @return true if this delivery is valid */
     @JsonIgnore
     public boolean isValid() {
 
