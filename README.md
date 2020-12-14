@@ -26,6 +26,13 @@ Configure as normal and use `git push heroku master`.
 
 `./gradlew build deployHeroku` works to deploy without pushes...sometimes.
 
+## MongoDB
+
+The mongodb cluster is configured under a personal account in https://mlab.com/ and can be accessed with the following url:
+mongodb+srv://cs5500:cs5500@cluster0.gz5ef.mongodb.net/test?retryWrites=true&w=majority
+
+The default database name is test.
+
 ## Spotless?
 
 Spotless automatically formats code. If it detects errors, run `./gradlew spotlessApply`

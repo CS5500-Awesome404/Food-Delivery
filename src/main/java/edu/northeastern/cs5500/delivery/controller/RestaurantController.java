@@ -59,6 +59,7 @@ public class RestaurantController {
                             .address("I am priceless")
                             .menu(buildDefaultMeals())
                             .build());
+            log.info("RestaurantController > construct > added default restaurants");
         } catch (Exception e) {
             log.error("RestaurantController > construct > adding default restaurants > failure?");
             e.printStackTrace();

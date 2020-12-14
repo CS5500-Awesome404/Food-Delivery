@@ -25,7 +25,8 @@ public class MongoDBService implements Service {
         if (databaseURI != null) {
             return databaseURI;
         }
-        return "mongodb://localhost:27017/delivery"; // connect to localhost by default
+        //return "mongodb://localhost:27017/delivery"; // connect to localhost by default
+        return "mongodb+srv://cs5500:cs5500@cluster0.gz5ef.mongodb.net/test?retryWrites=true&w=majority";
     }
 
     @Getter private MongoDatabase mongoDatabase;
@@ -47,7 +48,7 @@ public class MongoDBService implements Service {
 
         MongoClient mongoClient = MongoClients.create(mongoClientSettings);
         mongoDatabase = mongoClient.getDatabase(connectionString.getDatabase());
-        log.info("Successfully connected to mangodb database");
+        log.info("Successfully connected to mangodb database: " + connectionString.getDatabase());
     }
 
     @Override
