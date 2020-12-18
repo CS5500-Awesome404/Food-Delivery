@@ -75,21 +75,21 @@ public class RestaurantController {
         List<Meal> meals = new ArrayList<>();
         List<String> imageUrls =
                 Arrays.asList(
-                        "https://image.shutterstock.com/image-photo/close-braised-beef-short-rib-260nw-530248354.jpg",
+                        "https://www.cdc.gov/foodsafety/images/comms/food-Safety-Tips-small.jpg",
                         "https://img.jakpost.net/c/2016/09/29/2016_09_29_12990_1475116504._large.jpg",
                         "https://cbsnews1.cbsistatic.com/hub/i/2015/07/01/0b059f60-344d-4ada-baae-e683aff3650a/istock000044051102large.jpg",
-                        "https://images.livemint.com/rf/Image-621x414/LiveMint/Period2/2018/07/14/Photos/Processed/iStockphoto-kqbD--621x414@LiveMint.jpg",
-                        "https://media-cdn.grubhub.com/image/upload/c_scale,w_1650/q_50,dpr_auto,f_auto,fl_lossy,c_crop,e_vibrance:20,g_center,h_900,w_800/v1539269005/Onboarding/SL/burger-and-fries.jpg",
-                        "https://idealsoftware.co.za/wp-content/uploads/2015/08/restaurant-food-4.jpg",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQEpbLHDduA1blhZgX3phywvyX4NUuogMh_Q&usqp=CAU",
+                        "https://assets.telegraphindia.com/telegraph/2020/Oct/1604164256_lead-thali.jpg",
+                        "https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/slideshows/great_food_combos_for_losing_weight_slideshow/650x350_great_food_combos_for_losing_weight_slideshow.jpg",
                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIkmJJsAzuiFcXaw8klfoGGN1mJOQMhdr9mQ&usqp=CAU",
                         "https://www.deputy.com/uploads/2018/10/The-Most-Popular-Menu-Items-That-You-should-Consider-Adding-to-Your-Restaurant_Content-image1-min-1024x569.png",
                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwfnhRn9_pe22y2TJi01MT58002Lk83oNZ_g&usqp=CAU",
                         "https://restaurantden.com/wp-content/uploads/2017/09/free-stock-food-photography-websites.jpg",
                         "https://www.deputy.com/uploads/2018/10/The-Most-Popular-Menu-Items-That-You-should-Consider-Adding-to-Your-Restaurant_Content-image3-min-1024x569.png",
-                        "https://res.cloudinary.com/culturemap-com/image/upload/ar_4:3,c_fill,g_faces:center,w_980/v1591733500/photos/312778_original.jpg",
-                        "https://i0.wp.com/www.eatthis.com/wp-content/uploads/2020/11/chilis-chicken-crispers.jpg?resize=640%2C360&ssl=1",
-                        "https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/articles/health_tools/worst_restaurant_meals_slideshow/1800ss_getty_rf_ham_cheese_omelet.jpg?resize=650px:*",
-                        "https://cdn.takeoutcentral.com/images/home-hero/med-deli-slide.jpg",
+                        "https://images.everydayhealth.com/images/diet-nutrition/endomorph-diet-food-list-722x406.jpg?sfvrsn=bb1949e1_0",
+                        "https://www.expatica.com/app/uploads/sites/5/2020/03/Boeuf-bourguignon.jpg",
+                        "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/quick-easy-dinner-recipes-1570475391.jpg",
+                        "https://familydoctor.org/wp-content/uploads/2010/05/shutterstock_300553067.jpg",
                         "https://richmondmagazine.com/downloads/27931/download/Feature_BestRestaurants_RestaurantAdarra_Stuffed-squid_white-beans_greens_ShawneeCustalow_rp1219_teaser.jpg?cb=9072e3a62ddb7a279d5fc9cdbb1089c9",
                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7M7TdL8dtVuPfAV3ffyJw9oM8jtusNJoNXg&usqp=CAU",
                         "https://media.timeout.com/images/105561656/image.jpg",
@@ -97,11 +97,11 @@ public class RestaurantController {
                         "https://assets3.thrillist.com/v1/image/2856117/414x310/scale;jpeg_quality=65.jpg");
 
         for (int i = 0; i < count; i++) {
-            double price = Math.floor(random.nextInt(1000)) / 100;
+            double price = Math.floor(random.nextInt(1000)) / 100 + 5;
             meals.add(
                     Meal.builder()
                             .mealId(ObjectId.get())
-                            .mealName("Meal " + i)
+                            .mealName("Meal " + (i + 1))
                             .mealPrice(price)
                             .pictureUrl(imageUrls.get(num * 6 + i))
                             .build());
