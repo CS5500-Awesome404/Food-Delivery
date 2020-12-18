@@ -138,4 +138,8 @@ public class UserController {
         log.debug("UserController > getUsers");
         return users.getAll();
     }
+
+    public User findUserWithName(String name) {
+        return users.findWithField("name", name);
+    }
 }

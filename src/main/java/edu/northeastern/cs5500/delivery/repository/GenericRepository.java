@@ -16,4 +16,6 @@ public interface GenericRepository<T> {
     public Collection<T> getAll();
 
     public long count();
+
+    public T findWithField(String field, String val);
 }

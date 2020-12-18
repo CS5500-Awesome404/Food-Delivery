@@ -30,7 +30,10 @@ public class RestaurantController {
 
         log.info("RestaurantController > construct > adding default restaurants");
 
-        buildDefaultRestaurants();
+        // Only adds the default restaurants when there is none
+        if (restaurants.getAll().isEmpty()) {
+            buildDefaultRestaurants();
+        }
     }
 
     private void buildDefaultRestaurants() {

@@ -67,11 +67,33 @@ public class UserView implements View {
                 },
                 jsonTransformer);
 
+        get(
+                "/user/name/:name",
+                (request, response) -> {
+                    final String paramId = request.params(":name");
+                    log.info("/user/:name<{}>", paramId);
+                    User user = userController.findUserWithName(paramId);
+                    if (user == null) {
+                        halt(404);
+                    }
+                    response.type("application/json");
+                    return user;
+                },
+                jsonTransformer);
+
         post(
                 "/user",
                 (request, response) -> {
                     ObjectMapper mapper = new ObjectMapper();
                     HashMap<String, String> map = mapper.readValue(request.body(), HashMap.class);
+
+                    // If the given username was already registered, return 400
+                    if (userController.findUserWithName(map.get(ViewUtils.NAME)) != null) {
+                        log.error("Username already existed: {}", map.get(ViewUtils.NAME));
+                        response.status(400);
+                        return "";
+                    }
+
                     User user =
                             User.builder()
                                     .id(ObjectId.get())
