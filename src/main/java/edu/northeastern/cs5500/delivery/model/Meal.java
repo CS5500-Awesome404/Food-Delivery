@@ -15,6 +15,7 @@ public class Meal {
     private String mealName;
     private ObjectId mealId;
     private Double mealPrice;
+    private String pictureUrl;
 
     /** @return true if this delivery is valid */
     @JsonIgnore

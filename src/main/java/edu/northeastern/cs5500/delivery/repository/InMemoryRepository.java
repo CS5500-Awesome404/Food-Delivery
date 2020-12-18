@@ -52,4 +52,10 @@ public class InMemoryRepository<T extends Model> implements GenericRepository<T>
     public long count() {
         return collection.size();
     }
+
+    // TODO to be implemented
+    @Override
+    public T findWithField(String field, String val) {
+        return null;
+    }
 }

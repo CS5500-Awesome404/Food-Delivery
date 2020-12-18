@@ -2,12 +2,15 @@ package edu.northeastern.cs5500.delivery.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
-
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class Restaurant implements Model {
     private ObjectId id;
@@ -21,6 +24,11 @@ public class Restaurant implements Model {
     @JsonIgnore
     public boolean isValid() {
 
-        return name != null && !name.isEmpty() && phone != null && !phone.isEmpty() && address != null && !address.isEmpty();
+        return name != null
+                && !name.isEmpty()
+                && phone != null
+                && !phone.isEmpty()
+                && address != null
+                && !address.isEmpty();
     }
 }
