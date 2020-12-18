@@ -97,7 +97,7 @@ public class RestaurantController {
                         "https://assets3.thrillist.com/v1/image/2856117/414x310/scale;jpeg_quality=65.jpg");
 
         for (int i = 0; i < count; i++) {
-            double price = Math.floor(random.nextInt(10) + random.nextDouble() * 100) / 100;
+            double price = Math.floor(random.nextInt(1000)) / 100;
             meals.add(
                     Meal.builder()
                             .mealId(ObjectId.get())
