@@ -11,9 +11,6 @@ import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
-
-import com.mongodb.gridfs.GridFSInputFile;
-
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 
