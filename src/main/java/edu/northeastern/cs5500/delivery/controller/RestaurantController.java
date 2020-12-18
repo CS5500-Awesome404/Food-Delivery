@@ -11,6 +11,9 @@ import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+
+import com.mongodb.gridfs.GridFSInputFile;
+
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 
@@ -71,7 +74,7 @@ public class RestaurantController {
 
     private List<Meal> buildDefaultMeals() {
         Random random = new Random();
-        int countUpperBound = 20;
+        int countUpperBound = 8;
         int count = random.nextInt(countUpperBound) + 1;
         List<Meal> meals = new ArrayList<>();
         for (int i = 0; i < count; i++) {
@@ -81,11 +84,11 @@ public class RestaurantController {
             meals.add(
                     Meal.builder()
                             .mealId(ObjectId.get())
-                            .mealName("cupcake")
+                            .mealName("Meal " + i)
                             .mealPrice(price)
+                            .pictureUrl("test_url")
                             .build());
         }
-
         return meals;
     }
 
